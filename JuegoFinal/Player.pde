@@ -1,31 +1,31 @@
+/**Clase del jugador*/
 class Player {
-  PVector position;
-  PVector velocity;
-  PImage playerImage;
+  private PVector position;
+  private float velocity;
+  private PImage playerImage;
 
-  Player(PVector pos, String img) {
-    position = pos;
-    velocity = new PVector(0, 0);
-    playerImage = loadImage(img);
+  public Player(PVector pos, String img) {
+    this.position = pos;
+    this.playerImage = loadImage(img);
   }
 
 
   void update() {
+    velocity = 5;
     // Movimiento horizontal
     if (keyPressed) {
-      if (key == 'a' || key == 'A') {
-        velocity.x = -5;
-      } else if (key == 'd' || key == 'D') {
-        velocity.x = 5;
+      if (key == 'A' || keyCode == LEFT) {
+        this.position.x-=velocity;
+      } else if (key == 'D' || keyCode == RIGHT) {
+        this.position.x +=velocity;
       }
     } else {
-      velocity.x = 0;
+      this.velocity = 0;
     }
-
-    position.add(velocity);
   }
 
   void display() {
-    image(playerImage, position.x, position.y, 50, 50);
+    imageMode(CENTER);
+    image(this.playerImage, this.position.x, this.position.y, 50, 50);
   }
 }

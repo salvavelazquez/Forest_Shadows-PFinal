@@ -5,11 +5,12 @@ class Level {
   Level(ArrayList<Enemy> enemies, String bgImage) {
     this.enemies = enemies;
     this.bgImage = loadImage(bgImage);
-    this.bgImage.resize(1200, 600);
+    this.bgImage.resize(width, height);
   }
 
   void display() {
-    image(bgImage, 0, 0, width, height);
+    imageMode(CENTER);
+    image(bgImage, 0, 0);
    
     for (Enemy enemy : enemies) {
       enemy.update();
