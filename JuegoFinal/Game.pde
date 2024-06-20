@@ -5,9 +5,9 @@ class Game {
   
   Game() {
     
-      player = new Player(new PVector(100, height - 60), "Images/player.png");
+      player = new Player(new PVector(-width/3,height/3), "Images/player.png");
       ArrayList<Enemy> enemy = new ArrayList<Enemy>();
-      enemy.add(new Enemy(new PVector(300, height - 60), 2,"Images/Enemies/enemy.png"));
+      enemy.add(new Enemy(new PVector(width/3,height/3), 2,"Images/Enemies/enemy.png"));
     
       levels = new ArrayList<Level>();
       levels.add(new Level(enemy, "Images/levels/background1.jpg"));
@@ -18,7 +18,6 @@ class Game {
       Level level = levels.get(currentLevel);
       level.display();
       player.display();
-      player.update();
   }
   
   void mouseControladorGame() {

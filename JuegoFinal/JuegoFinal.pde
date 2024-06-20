@@ -1,10 +1,14 @@
 Menu menu;
 Game game;
+/**Variable que usaremos para el estado a evaluar entre las pantallas*/
+// ------ VARIABLE GLOBAL ------
 int estadoActual;
+//**Variable para indicar si se debe reiniciar el nivel*/
+boolean reiniciarNivel = false;
 Player player;
 
 void setup() {
-  size(1200, 600);
+  fullScreen();
   frameRate(60); // Asegurar que el juego se ejecute a 60 fps
   menu = new Menu();
   game = new Game();
@@ -12,6 +16,8 @@ void setup() {
 }
 
 void draw() {
+  translate(width/2,height/2); // Establece el origen de coordenadas en el centro
+  scale(1,1); // Establece los cuadrantes
   background(0);
 
   if (estadoActual == 0) {
