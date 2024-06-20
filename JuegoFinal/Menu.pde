@@ -1,77 +1,85 @@
 class Menu {
-  PImage backgroundImage;
-  Button playButton;
-  Button instructionsButton;
-  Button developersButton;
-  Button backButton ;
-  float y;
+  private PImage backgroundImage;
+  private float up;
+  private Button playButton;
+  private Button instructionsButton;
+  private Button developersButton;
+  private Button backButton ;
 
-  Menu() {
-    backgroundImage = loadImage("Images/fondo3.jpg");
-    playButton = new Button(width / 2 - 100, height / 2, 200, 50, "Play");
-    instructionsButton = new Button(width / 2 - 100, height / 2 + 60, 200, 50, "Instrucciones");
-    developersButton = new Button(width / 2 - 100, height / 2 + 120, 200, 50, "Desarrolladores");
-    backButton = new Button(width / 2 - 100, height / 2 + 160, 220, 50, "Regresar al menú");
+  public Menu() {
+    this.backgroundImage = loadImage("Images/fondo3.jpg");
+    this.playButton = new Button(width / 2 - 100, height / 2, 200, 50, "Play");
+    this.instructionsButton = new Button(width / 2 - 100, height / 2 + 60, 200, 50, "Instrucciones");
+    this.developersButton = new Button(width / 2 - 100, height / 2 + 120, 200, 50, "Desarrolladores");
+    this.backButton = new Button(width / 2 - 100, height / 2 + 160, 220, 50, "Regresar al menú");
   }
   
-  void display() {
-    image(backgroundImage, 0, 0, width, height);
+  public void display() {
+    pushMatrix(); // Mantiene las posiciones anteriores al cambio en el translate y scale en void draw
+    resetMatrix(); // Mantiene las posiciones anteriores al cambio en el translate y scale en void draw
+    image(this.backgroundImage, 0, 0, width, height);
     fill(255);
     textSize(80);
     textAlign(CENTER);
     textFont(createFont("Arial Bold", 80)); 
-    text("The Game", width / 2, height / 3);
+    text("The Game", width / 2, height / 4);
     playButton.display();
     instructionsButton.display();
     developersButton.display();
+    popMatrix(); // Mantiene las posiciones anteriores al cambio en el translate y scale en void draw
   }
 
-  void displayInstructions() {
-    image(backgroundImage, 0, 0, width, height);
+  public void displayInstructions() {
+    pushMatrix();
+    resetMatrix();
+    image(this.backgroundImage, 0, 0, width, height);
     fill(255);
     textSize(24);
     textAlign(CENTER);
-    text("Usa las teclas A y D para moverte y la tecla W para saltar.", width / 2, height / 2);
+    text("Usa las teclas A y D para moverte y la tecla W para saltar.", width/2, height/2);
     backButton.display();
-    
+    popMatrix();    
   }
   
-  void displayDevelopers() {
-    image(backgroundImage, 0, 0, width, height);
+  public void displayDevelopers() {
+    pushMatrix();
+    resetMatrix();
+    image(this.backgroundImage, 0, 0, width, height);
     fill(255);
     textSize(30);
     textAlign(CENTER);
-    text("DEVELOPERS", width / 2, y);
-    text("- Alejandro Mercado", width / 2, y + 40);
-    text("- Leonardo Guanuco", width / 2, y + 80);
-    text("- Augusto Velazquez", width / 2, y + 120);
-    y -= 15;
-    if (y < height / 2 - 60) {
-      y = height / 2 - 60; // Para detener texto en el mdio
+    text("DEVELOPERS", width / 2, this.up);
+    text("- Alejandro Mercado", width / 2, this.up + 40);
+    text("- Leonardo Guanuco", width / 2, this.up + 80);
+    text("- Augusto Velazquez", width / 2, this.up + 120);
+    this.up -= 100 * Time.getDeltaTime(frameRate);
+    if (this.up < height / 2 - 60) {
+      this.up = height / 2 - 60; // Para detener texto en el mdio
     }
     backButton.display();
+    popMatrix();    
   }
   
-  void mouseControladorMenu() {
+  public void mouseControladorMenu() {
     if (playButton.mouseEstaEncima()) {
       estadoActual = 1;
     } else if (instructionsButton.mouseEstaEncima()) {
       estadoActual = 2;
     }else if (developersButton.mouseEstaEncima()) {
       estadoActual = 3;
-      y = height; // Resetear
+      this.up = height; // Resetear
     } else if (backButton.mouseEstaEncima()) {
       estadoActual = 0;
     }
   }
   
-  void mouseControladorInstrucciones() {
+  public void mouseControladorInstrucciones() {
     if (backButton.mouseEstaEncima()) {
       estadoActual = 0;
     }
   }
   
-  void mouseControladorDesarrolladores() {
+  public void mouseControladorDesarrolladores() {
     if (backButton.mouseEstaEncima()) {
       estadoActual = 0;
     }

@@ -13,9 +13,6 @@ class Button {
 
   void display() {
     noStroke();
-    //102, 0, 153, 200
-    //50, 100, 250, 200
-    //37, 227, 14, 200
     fill(102, 0, 153, 200);
     if (mouseEstaEncima()) {
       fill(50, 100, 250, 200);
