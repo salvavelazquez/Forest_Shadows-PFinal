@@ -1,20 +1,77 @@
 class Player {
-  private PVector position;
-  private PVector speed;
-  private float gravity = 10;
-  private float jumpPower = -250;
-  private boolean isJumping = false;
-  private float groundLevel;
 
-  public Player(float startX, float startY, float groundLevel) {
+  PVector position;
+  PVector speed;
+  float gravity = 0.6;
+  float jumpPower = -11;
+  boolean isJumping = false;
+  float groundLevel;
+  int playerWidth, playerHeight;
+
+  PImage[] playerRight;
+  PImage[] playerLeft;
+  PImage[] playerReposo;
+  boolean movingLeft;
+  boolean movingRight;
+  int currentFrame;
+  int totalFrames;
+  int frameInterval;
+  int frameCounter;
+
+
+  Player(float startX, float startY, float groundLevel, String[] imgsRight, String [] imgsLeft, String [] imgsReposo, int frameInterval ) {
     this.position = new PVector(startX, startY);
     this.speed = new PVector(0, 0);
     this.groundLevel = groundLevel;
+    this.playerWidth = 200;
+    this.playerHeight =200;
+
+    isJumping = false;
+    playerRight = new PImage[imgsRight.length];
+    playerLeft = new PImage[imgsLeft.length];
+    playerReposo= new PImage[imgsReposo.length];
+
+
+    for (int i = 0; i < imgsRight.length; i++) {
+      playerRight[i] = loadImage(imgsRight[i]);
+      playerRight[i].resize(playerWidth, playerHeight); // Cambiar el tamaño de la imagen
+    }
+    for (int i = 0; i < imgsLeft.length; i++) {
+      playerLeft[i] = loadImage(imgsLeft[i]);
+      playerLeft[i].resize(playerWidth, playerHeight); // Cambiar el tamaño de la imagen
+    }
+    for (int i = 0; i < imgsReposo.length; i++) {
+      playerReposo[i] = loadImage(imgsReposo[i]);
+      playerReposo[i].resize(playerWidth, playerHeight); // Cambiar el tamaño de la imagen
+    }
+    currentFrame = 0;
+    totalFrames =  imgsRight.length;
+    this.frameInterval = frameInterval;
+    frameCounter = 0;
+
+    movingLeft = false;
+    movingRight = false;
   }
 
   public void update(float camX) {
     speed.y += gravity * Time.getDeltaTime(frameRate);
     position.add(speed);
+
+
+    if (movingLeft) {
+      speed.x = -5;
+    } else if (movingRight) {
+      speed.x = 5;
+    } else {
+      speed.x = 0;
+    }
+
+    frameCounter++;
+    if (frameCounter >= frameInterval) {
+      currentFrame = (currentFrame + 1) % totalFrames;
+      frameCounter = 0;
+    }
+
 
     // Limitar el movimiento del jugador a la izquierda
     if (position.x < camX-width/2) {
@@ -22,36 +79,43 @@ class Player {
     }
 
     // Verificar colisión con el suelo
-    if (position.y > groundLevel) {
-      position.y = groundLevel;
+    if (position.y> groundLevel) {
+      position.y= groundLevel;
       speed.y = 0;
       isJumping = false;
     }
+    
+    println(position.y);
+    //Verificar si cayó de la plataforma
+    if(position.y>300){
+      resetPos();
+    }
   }
 
-  public void display(float camX) {
-    fill(255, 0, 0);
-    rect(position.x - camX, position.y, 50, 50);
+  void display(float camX) {
+
+    if (speed.x==5) {
+      image(playerRight[currentFrame], position.x-camX, position.y, playerWidth, playerHeight);
+    } else if (speed.x==-5) {
+      image(playerLeft[currentFrame], position.x-camX, position.y, playerWidth, playerHeight);
+    } else {
+      image(playerReposo[currentFrame], position.x-camX, position.y, playerWidth, playerHeight);
+    }
   }
+
+
   public void handleCollision(ArrayList<Platform> platforms) {
     for (Platform p : platforms) {
-      if (this.position.x + 50 > p.x && position.x - 20 < p.x + p.w) {
-        if (this.position.y + 50 > p.y && position.y + 20 < p.y + p.h) {
-          this.position.y = p.y - 50;
-          this.speed.y = 0;
+      if (position.x+40> p.x && position.x < p.x + p.w) {
+        if (position.y + 170 > p.y && position.y +80 < p.y + p.h) {
+          position.y = p.y -170;
+          speed.y = 0;
           isJumping = false;
         }
       }
     }
   }
-
-  public void moveLeft() {
-    speed.x = -250 * Time.getDeltaTime(frameRate);
-  }
-
-  public void moveRight() {
-    speed.x = 250 * Time.getDeltaTime(frameRate);
-  }
+  
 
   public void jump() {
     if (!isJumping) {
@@ -59,8 +123,31 @@ class Player {
       isJumping = true;
     }
   }
-
-  public void stop() {
-    speed.x = 0;
+  
+  void resetPos(){
+    position.x=100;
+    position.y=300;
+    
   }
+
+
+  void manejarTeclaPresionada() {
+    if (key == 'a' || keyCode==LEFT) {
+      movingLeft = true;
+    } else if (key == 'd' || keyCode == RIGHT) {
+      movingRight = true;
+    } else if (key == 'w' || keyCode == UP) {
+      jump();
+    }
+  }
+
+  void manejarTeclaLiberada() {
+    if ( key == 'd' ||keyCode == RIGHT) {
+      movingRight = false;
+    } else if (key == 'a' || keyCode == LEFT) {
+      movingLeft = false;
+    }
+
+}
+
 }
