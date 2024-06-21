@@ -1,4 +1,5 @@
 class Player {
+
   PVector position;
   PVector speed;
   float gravity = 0.6;
@@ -52,7 +53,7 @@ class Player {
     movingRight = false;
   }
 
-  void update(float camX) {
+  public void update(float camX) {
     speed.y += gravity;
     position.add(speed);
 
@@ -97,7 +98,7 @@ class Player {
   }
 
 
-  void handleCollision(ArrayList<Platform> platforms) {
+  public void handleCollision(ArrayList<Platform> platforms) {
     for (Platform p : platforms) {
       if (position.x+40> p.x && position.x < p.x + p.w) {
         if (position.y + 170 > p.y && position.y +80 < p.y + p.h) {
@@ -107,14 +108,15 @@ class Player {
         }
       }
     }
-  }
 
-  void jump() {
+
+  public void jump() {
     if (!isJumping) {
       speed.y = jumpPower;
       isJumping = true;
     }
   }
+
 
   void manejarTeclaPresionada() {
     if (key == 'a' || keyCode==LEFT) {
@@ -132,5 +134,5 @@ class Player {
     } else if (key == 'a' || keyCode == LEFT) {
       movingLeft = false;
     }
-  }
+
 }

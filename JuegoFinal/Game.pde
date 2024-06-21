@@ -1,4 +1,5 @@
 class Game {
+
   Player player;
   ArrayList<Platform> platforms = new ArrayList<Platform>();
   PImage bgImage;
@@ -20,24 +21,9 @@ class Game {
 
     bgImage = loadImage("Images/levels/background2.png"); // Carga tu imagen de fondo aquí
     platformImage = loadImage("Images/Ground_11.png"); // Carga tu imagen de plataforma aquí
+}
 
-  
-    // Añadir algunas plataformas
-    platforms.add(new Platform(-width/2, groundLevel - 5 , 600, 55));
-    platforms.add(new Platform(0, groundLevel - 5, 600, 55));
-    platforms.add(new Platform(1400, groundLevel - 100, 200, 50));
-    // Nuevas plataformas
-    platforms.add(new Platform(1600, groundLevel - 200, 150, 50));
-    platforms.add(new Platform(1830, groundLevel - 118, 90, 40));
-    platforms.add(new Platform(1900, groundLevel - 5, 300, 55));
-
-    platforms.add(new Platform(2400, groundLevel - 5, 300, 55));
-    platforms.add(new Platform(2750, groundLevel - 90, 200, 55));
-    platforms.add(new Platform(3100, groundLevel - 90, 100, 50));
-    platforms.add(new Platform(3250, groundLevel - 5, 1000, 55));
-  }
-
-  void display() {
+  public void display() {
     background(135, 206, 235); // Un color azul cielo para el fondo
 
     // Dibujar el fondo repetidamente
@@ -72,5 +58,5 @@ class Game {
 
   void tecladoLiberadoGame() {
     player.manejarTeclaLiberada();
-  }
+
 }
