@@ -1,8 +1,8 @@
 class Player {
   private PVector position;
   private PVector speed;
-  private float gravity = 0.6;
-  private float jumpPower = -11;
+  private float gravity = 10;
+  private float jumpPower = -250;
   private boolean isJumping = false;
   private float groundLevel;
 
@@ -13,7 +13,7 @@ class Player {
   }
 
   public void update(float camX) {
-    speed.y += gravity;
+    speed.y += gravity * Time.getDeltaTime(frameRate);
     position.add(speed);
 
     // Limitar el movimiento del jugador a la izquierda
@@ -31,14 +31,14 @@ class Player {
 
   public void display(float camX) {
     fill(255, 0, 0);
-    rect(position.x - camX, position.y, 20, 20);
+    rect(position.x - camX, position.y, 50, 50);
   }
   public void handleCollision(ArrayList<Platform> platforms) {
     for (Platform p : platforms) {
-      if (position.x + 20 > p.x && position.x - 20 < p.x + p.w) {
-        if (position.y + 20 > p.y && position.y + 20 < p.y + p.h) {
-          position.y = p.y - 20;
-          speed.y = 0;
+      if (this.position.x + 50 > p.x && position.x - 20 < p.x + p.w) {
+        if (this.position.y + 50 > p.y && position.y + 20 < p.y + p.h) {
+          this.position.y = p.y - 50;
+          this.speed.y = 0;
           isJumping = false;
         }
       }
@@ -46,16 +46,16 @@ class Player {
   }
 
   public void moveLeft() {
-    speed.x = -5;
+    speed.x = -250 * Time.getDeltaTime(frameRate);
   }
 
   public void moveRight() {
-    speed.x = 5;
+    speed.x = 250 * Time.getDeltaTime(frameRate);
   }
 
   public void jump() {
     if (!isJumping) {
-      speed.y = jumpPower;
+      speed.y = jumpPower* Time.getDeltaTime(frameRate);
       isJumping = true;
     }
   }

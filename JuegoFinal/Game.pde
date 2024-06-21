@@ -31,11 +31,11 @@ class Game {
     background(135, 206, 235); // Un color azul cielo para el fondo
 
     // Dibujar el fondo repetidamente
-    int bgWidth = bgImage.width;
-    int bgHeight = -height/2;
-    for (int i = -1; i <= width / bgWidth + 1; i++) {
-      image(bgImage, i * bgWidth - camX % bgWidth, bgHeight);
-    }
+    //int bgWidth = bgImage.width;
+    //int bgHeight = -height/2;
+    //for (int i = -1; i <= width / bgWidth + 1; i++) {
+    //  image(bgImage, i * bgWidth - camX % bgWidth, bgHeight);
+    //}
 
     player.update(camX);
     player.handleCollision(platforms);
