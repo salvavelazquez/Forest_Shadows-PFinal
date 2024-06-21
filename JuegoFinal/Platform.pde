@@ -8,9 +8,9 @@ class Platform {
     this.h = h;
   }
 
-  void display(float camX, float vibrationOffset, PImage platformImage) {
+  public void display(float camX, PImage platformImage) {
     for (int i = 0; i < w; i += platformImage.width) {
-      image(platformImage, x + i - camX, y + vibrationOffset, platformImage.width, h);
+      image(platformImage, x + i - camX, y, platformImage.width, h);
     }
   }
 }
