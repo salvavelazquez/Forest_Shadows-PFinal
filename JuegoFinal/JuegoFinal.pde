@@ -16,7 +16,7 @@ void setup() {
 }
 
 void draw() {
-  translate(width/2,height/2); // Establece el origen de coordenadas en el centro
+  //translate(width/2,height/2); // Establece el origen de coordenadas en el centro
   scale(1,1); // Establece los cuadrantes
   background(0);
 
@@ -55,6 +55,6 @@ void keyPressed() {
 
 void keyReleased() {
   if (estadoActual == 1) {
-    //game.tecladoLiberadoGame();
+    game.tecladoLiberadoGame();
   }
 }
