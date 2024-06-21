@@ -55,6 +55,6 @@ void keyPressed() {
 
 void keyReleased() {
   if (estadoActual == 1) {
-    //game.tecladoLiberadoGame();
+    game.tecladoLiberadoGame();
   }
 }
