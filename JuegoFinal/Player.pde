@@ -4,7 +4,7 @@ class Player {
   PVector speed;
   float gravity = 0.6;
   float jumpPower = -11;
-  private boolean isJumping = false;
+  boolean isJumping = false;
   float groundLevel;
   int playerWidth, playerHeight;
 
@@ -108,6 +108,7 @@ class Player {
         }
       }
     }
+  }
 
 
   public void jump() {
@@ -134,5 +135,7 @@ class Player {
     } else if (key == 'a' || keyCode == LEFT) {
       movingLeft = false;
     }
+
+}
 
 }
