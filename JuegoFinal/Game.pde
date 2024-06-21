@@ -1,17 +1,27 @@
 class Game {
-  private Player player;
-  private ArrayList<Platform> platforms = new ArrayList<Platform>();
-  private PImage bgImage;
-  private PImage platformImage;
-  private float camX = -width/2;
-  private float groundLevel;
+  Player player;
+  ArrayList<Platform> platforms = new ArrayList<Platform>();
+  PImage bgImage;
+  PImage platformImage;
+  float  camX = -width/2;
+  float groundLevel;
 
-  public Game() {
+  Game() {
     this.groundLevel = height/2.23;
-    this.player = new Player(100, height/2.23, groundLevel);
-    this.bgImage = loadImage("Images/levels/background2.png"); // Carga tu imagen de fondo aquí
-    this.platformImage = loadImage("Images/Ground_11.png"); // Carga tu imagen de plataforma aquí
 
+    String playerIdRigth ="Images/Player/rigth/Movimiento/";
+    String playerIdLeft ="Images/Player/left/Movimiento/";
+    String playerIdReposo="Images/Player/Reposo/";
+
+    String[] playerSpritesRight = {playerIdRigth+"0.png", playerIdRigth+"1.png", playerIdRigth+"2.png", playerIdRigth+"3.png", playerIdRigth+"4.png", playerIdRigth+"5.png"};
+    String[] playerSpritesLeft = {playerIdLeft +"0.png", playerIdLeft +"1.png", playerIdLeft +"2.png", playerIdLeft +"3.png", playerIdLeft +"4.png", playerIdLeft +"5.png"};
+    String[] playerSpritesReposo={ playerIdReposo+"0.png", playerIdReposo+"1.png", playerIdReposo+"2.png", playerIdReposo+"3.png", playerIdReposo+"4.png", playerIdReposo+"5.png", playerIdReposo+"6.png", playerIdReposo+"7.png", playerIdReposo+"8.png", playerIdReposo+"9.png", playerIdReposo+"10.png", playerIdReposo+"11.png", playerIdReposo+"12.png", playerIdReposo+"13.png", playerIdReposo+"14.png", playerIdReposo+"15.png", playerIdReposo+"16.png", };
+    player = new Player(100,  height-200, groundLevel, playerSpritesRight, playerSpritesLeft, playerSpritesReposo, 10);
+
+    bgImage = loadImage("Images/levels/background2.png"); // Carga tu imagen de fondo aquí
+    platformImage = loadImage("Images/Ground_11.png"); // Carga tu imagen de plataforma aquí
+
+  
     // Añadir algunas plataformas
     platforms.add(new Platform(-width/2, groundLevel - 5 , 600, 55));
     platforms.add(new Platform(0, groundLevel - 5, 600, 55));
@@ -27,7 +37,7 @@ class Game {
     platforms.add(new Platform(3250, groundLevel - 5, 1000, 55));
   }
 
-  public void display() {
+  void display() {
     background(135, 206, 235); // Un color azul cielo para el fondo
 
     // Dibujar el fondo repetidamente
@@ -39,11 +49,10 @@ class Game {
 
     player.update(camX);
     player.handleCollision(platforms);
-
     // Actualizar la cámara
     camX = max(player.position.x , 0);
 
-    // Dibujar plataformas
+   // Dibujar plataformas
     for (Platform p : platforms) {
       p.display(camX, platformImage);
     }
@@ -52,25 +61,16 @@ class Game {
     player.display(camX);
   }
 
-  public void mouseControladorGame() {
+
+  void mouseControladorGame() {
     // manejar el mouse
   }
 
-  public void tecladoControladorGame() {
-    if (keyCode == LEFT) {
-      player.moveLeft();
-    }
-    if (keyCode == RIGHT) {
-      player.moveRight();
-    }
-    if (keyCode == UP) {
-      player.jump();
-    }
+  void tecladoControladorGame() {
+    player.manejarTeclaPresionada();
   }
 
-  public void tecladoLiberadoGame() {
-    if (keyCode == LEFT||keyCode == RIGHT) {
-      player.stop();
-    }
+  void tecladoLiberadoGame() {
+    player.manejarTeclaLiberada();
   }
 }
