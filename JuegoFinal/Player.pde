@@ -84,6 +84,12 @@ class Player {
       speed.y = 0;
       isJumping = false;
     }
+    
+    println(position.y);
+    //Verificar si cayó de la plataforma
+    if(position.y>300){
+      resetPos();
+    }
   }
 
   void display(float camX) {
@@ -116,6 +122,12 @@ class Player {
       speed.y = jumpPower;
       isJumping = true;
     }
+  }
+  
+  void resetPos(){
+    position.x=100;
+    position.y=300;
+    
   }
 
 
