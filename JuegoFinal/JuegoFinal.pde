@@ -5,7 +5,6 @@ Game game;
 int estadoActual;
 //**Variable para indicar si se debe reiniciar el nivel*/
 boolean reiniciarNivel = false;
-Player player;
 
 void setup() {
   fullScreen();

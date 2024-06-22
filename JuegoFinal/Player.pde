@@ -1,29 +1,32 @@
-class Player {
-
-  PVector position;
-  PVector speed;
-  int lives;
-  float gravity = 0.6;
-  float jumpPower = -11;
-  boolean isJumping = false;
-  float groundLevel;
+class Player extends GameObject{
+  private PVector speed;
+  private int lives;
+  private float gravity = 10;
+  private float jumpPower = -300;
+  private boolean isJumping = false;
+  private float groundLevel;
+  private SpritePlayer spritePlayer;
+  private int statePlayer;
+  private float  camX = -width/2;
+  
+  // ---- VARIABLES SPRITES ----- //
   int playerWidth, playerHeight;
-
-  PImage[] playerRight;
-  PImage[] playerLeft;
-  PImage[] playerReposo;
+  PImage[] playerRight; /**Imagen del sprite del jugador*/
+  PImage[] playerLeft; /**Imagen del sprite del jugador*/
+  PImage[] playerReposo; /**Imagen del sprite del jugador*/
   boolean movingLeft;
   boolean movingRight;
-  int currentFrame;
+  int currentFrame;/**Posición flotante del cuadro de imagen actual en la transición*/
   int totalFrames;
-  int frameInterval;
+  int frameInterval;/**Posición flotante del siguiente cuadro de imagen en la transición*/
   int frameCounter;
 
-
-  Player(float startX, float startY, float groundLevel, String[] imgsRight, String [] imgsLeft, String [] imgsReposo, int frameInterval ) {
-    this.position = new PVector(startX, startY);
+  public Player(float x, float y, float groundLevel, String[] imgsRight, String [] imgsLeft, String [] imgsReposo, int frameInterval ) {
+    this.position = new PVector(x, y);
     this.speed = new PVector(0, 0);
     this.groundLevel = groundLevel;
+    this.spritePlayer = new SpritePlayer();
+    this.statePlayer = PlayerStateMachine.IDLE;
     this.playerWidth = 200;
     this.playerHeight =200;
     lives = 4;
@@ -31,8 +34,6 @@ class Player {
     playerRight = new PImage[imgsRight.length];
     playerLeft = new PImage[imgsLeft.length];
     playerReposo= new PImage[imgsReposo.length];
-
-
     for (int i = 0; i < imgsRight.length; i++) {
       playerRight[i] = loadImage(imgsRight[i]);
       playerRight[i].resize(playerWidth, playerHeight); // Cambiar el tamaño de la imagen
@@ -49,16 +50,12 @@ class Player {
     totalFrames =  imgsRight.length;
     this.frameInterval = frameInterval;
     frameCounter = 0;
-
     movingLeft = false;
     movingRight = false;
   }
-
-  public void update(float camX) {
-    speed.y += gravity;
+  public void update() {
+    speed.y += gravity * Time.getDeltaTime(frameRate);
     position.add(speed);
-
-
     if (movingLeft) {
       speed.x = -5;
     } else if (movingRight) {
@@ -72,9 +69,8 @@ class Player {
       currentFrame = (currentFrame + 1) % totalFrames;
       frameCounter = 0;
     }
-
-
     // Limitar el movimiento del jugador a la izquierda
+    this.camX = max(this.position.x, 0);
     if (position.x < camX-width/2) {
       position.x = camX-width/2;
     }
@@ -86,7 +82,7 @@ class Player {
       isJumping = false;
     }
 
-    println(position.y);
+    //println(position.y);
     //Verificar si cayó de la plataforma
     if (position.y>300) {
       lives--;
@@ -97,39 +93,33 @@ class Player {
     if (lives==0) {
       fill(255);
       textSize(50);
-      text("Game Over", width / 2 - 100, height / 2);
+      text("Game Over", 0, 0);
       noLoop();
     }
   }
 
-  void display(float camX) {
-
-    if (speed.x==5) {
-      image(playerRight[currentFrame], position.x-camX, position.y, playerWidth, playerHeight);
-    } else if (speed.x==-5) {
-      image(playerLeft[currentFrame], position.x-camX, position.y, playerWidth, playerHeight);
-    } else {
-      image(playerReposo[currentFrame], position.x-camX, position.y, playerWidth, playerHeight);
-    }
+  void display() {
+    this.camX = max(this.position.x, 0);
+    spritePlayer.renderPlayer(this.statePlayer,this.position,this.camX);
   }
 
 
   public void handleCollision(ArrayList<Platform> platforms) {
     for (Platform p : platforms) {
-      if (position.x+40> p.x && position.x < p.x + p.w) {
-        if (position.y + 170 > p.y && position.y +80 < p.y + p.h) {
-          position.y = p.y -170;
-          speed.y = 0;
+      if (this.position.x + 70 > p.x && position.x - 20 < p.x + p.w) {
+        if (this.position.y + 70 > p.y && position.y + 20 < p.y + p.h) {
+          this.position.y = p.y - 70;
+          this.speed.y = 0;
           isJumping = false;
         }
       }
     }
   }
-
+  
 
   public void jump() {
     if (!isJumping) {
-      speed.y = jumpPower;
+      speed.y = jumpPower* Time.getDeltaTime(frameRate);
       isJumping = true;
     }
   }
