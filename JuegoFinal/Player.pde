@@ -10,16 +10,23 @@ class Player extends GameObject {
   private float  camX = -width/2;
   private boolean movingLeft;
   private boolean movingRight;
+  // Inicializar los vectores
+  Vector vectorPersonaje;
+  Vector vectorPersonajeEnemigo;
+  
   
   public Player(float x, float y, float groundLevel ) {
     this.position = new PVector(x, y);
     this.groundLevel = groundLevel;
-    this.speed = new PVector(0,0);
+    this.speed = new PVector(0, 0);
     this.spritePlayer = new SpritePlayer();
     this.statePlayer = PlayerStateMachine.IDLE;
     this.lives = 4;
     this.movingLeft = false;
     this.movingRight = false;
+    // Inicializar los vectores
+    vectorPersonaje = new Vector(new PVector(x, y), new PVector(1, 0));
+    vectorPersonajeEnemigo = new Vector(new PVector(x, y), new PVector(1, 0));
   }
   public void update() {
     speed.y += gravity * Time.getDeltaTime(frameRate);
@@ -66,6 +73,7 @@ class Player extends GameObject {
   public void display() {
     this.camX = max(this.position.x, 0);
     spritePlayer.renderPlayer(this.statePlayer, this.position, this.camX);
+    campoVision() ;
   }
 
   public void handleCollision(ArrayList<Platform> platforms) {
@@ -75,6 +83,51 @@ class Player extends GameObject {
           this.position.y = p.y - 90;
           this.speed.y = 0;
           isJumping = false;
+        }
+      }
+    }
+  }
+
+  void campoVision() {
+    float anguloVision = radians(15);
+    noStroke();
+    fill(0, 255, 0, 127); // Color verde translúcido
+    float fovRadius = 300;
+    float startAngle = atan2(vectorPersonaje.getDestino().y, vectorPersonaje.getDestino().x) - anguloVision;
+    float endAngle = atan2(vectorPersonaje.getDestino().y, vectorPersonaje.getDestino().x) + anguloVision;
+
+    if (speed.x > 0) {
+      arc(position.x-this.camX, position.y+20, fovRadius * 2, fovRadius * 2, startAngle, endAngle);
+    } else if (speed.x < 0) {
+      pushMatrix();
+      translate(position.x-this.camX-50, position.y+20);
+      rotate(PI);
+      arc(0, 0, fovRadius * 2, fovRadius * 2, startAngle, endAngle);
+      popMatrix();
+    } else {
+    }
+  }
+  public void killEnemiesInView(ArrayList<Enemy> enemies) {
+    float anguloVision = radians(15);
+    float fovRadius = 300;
+    PVector direction = new PVector(0, 0);
+
+    if (movingRight) {
+      direction = new PVector(1, 0);
+    } else if (movingLeft) {
+      direction = new PVector(-1, 0);
+    }
+
+    if (direction.mag() > 0) {
+      for (int i = enemies.size() - 1; i >= 0; i--) {
+        Enemy enemy = enemies.get(i);
+        PVector toEnemy = PVector.sub(enemy.position, this.position);
+        float distance = toEnemy.mag();
+        if (distance < fovRadius) {
+          float angleToEnemy = PVector.angleBetween(direction, toEnemy);
+          if (abs(angleToEnemy) < anguloVision) {
+            enemies.remove(i); // Elimina el enemigo del ArrayList
+          }
         }
       }
     }

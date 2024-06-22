@@ -40,6 +40,10 @@ class Game {
     for (Platform p : platforms) {
       p.display(camX, platformImage);
     }
+    
+     
+    // Elimina enemigos en el campo de visión del jugador
+    player.killEnemiesInView(enemies1);
     for (Enemy enemy : enemies1) {
       enemy.update();
       enemy.display();
