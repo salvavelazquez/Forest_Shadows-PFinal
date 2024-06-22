@@ -38,10 +38,10 @@ class SpritePlayer {
     case PlayerStateMachine.IDLE:
       playerGeneral = playerIdle;
       break;
-    case PlayerStateMachine.RIGHT:
+    case PlayerStateMachine.MOVE_RIGHT:
       playerGeneral = playerRight;
       break;
-    case PlayerStateMachine.LEFT:
+    case PlayerStateMachine.MOVE_LEFT:
       playerGeneral = playerLeft;
       break;
     default:
@@ -50,10 +50,11 @@ class SpritePlayer {
     }
     imageMode(CENTER);
     // Usar los factores de escala al renderizar la imagen
-    image(playerGeneral.get(this.xFrame, this.yFrame, this.widthFrame, this.heightFrame),
-      position.x - camX, position.y,
-      this.widthFrame * this.scaleFactorX, this.heightFrame * this.scaleFactorY);
-    xFrameFloat += (widthFrame*velTransicion * Time.getDeltaTime(frameRate));
+    image(playerGeneral.get(this.xFrame , this.yFrame , this.widthFrame , this.heightFrame),position.x - camX, position.y,
+    this.widthFrame * this.scaleFactorX, 
+    this.heightFrame * this.scaleFactorY);
+    
+    xFrameFloat += (widthFrame * velTransicion * Time.getDeltaTime(frameRate));
 
     if (xFrameFloat >= nextxFrameFloat) {
       this.xFrame += this.widthFrame;

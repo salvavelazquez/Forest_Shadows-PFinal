@@ -8,54 +8,34 @@ class Player extends GameObject {
   private SpritePlayer spritePlayer;
   private int statePlayer;
   private float  camX = -width/2;
+  private boolean movingLeft;
+  private boolean movingRight;
 
-  // ---- VARIABLES SPRITES ----- //
-  int playerWidth, playerHeight;
-  PImage[] playerRight; /**Imagen del sprite del jugador*/
-  PImage[] playerLeft; /**Imagen del sprite del jugador*/
-  PImage[] playerReposo; /**Imagen del sprite del jugador*/
-  boolean movingLeft;
-  boolean movingRight;
-  int currentFrame;/**Posición flotante del cuadro de imagen actual en la transición*/
-  int totalFrames;
-  int frameInterval;/**Posición flotante del siguiente cuadro de imagen en la transición*/
-  int frameCounter;
 
-  public Player(float x, float y, float groundLevel, int frameInterval ) {
+  public Player(float x, float y, float groundLevel ) {
     this.position = new PVector(x, y);
-    this.speed = new PVector(0, 0);
     this.groundLevel = groundLevel;
+    this.speed = new PVector(0,0);
     this.spritePlayer = new SpritePlayer();
     this.statePlayer = PlayerStateMachine.IDLE;
-    this.playerWidth = 200;
-    this.playerHeight =200;
-    this.statePlayer = PlayerStateMachine.IDLE;
-
-
-    lives = 4;
-
-    currentFrame = 0;
-
-    this.frameInterval = frameInterval;
-    frameCounter = 0;
-    movingLeft = false;
-    movingRight = false;
+    this.lives = 4;
+    this.movingLeft = false;
+    this.movingRight = false;
   }
   public void update() {
     speed.y += gravity * Time.getDeltaTime(frameRate);
     position.add(speed);
     if (movingLeft) {
-      statePlayer = PlayerStateMachine.LEFT;
+      statePlayer = PlayerStateMachine.MOVE_LEFT;
       speed.x = -5;
     } else if (movingRight) {
-      statePlayer = PlayerStateMachine.RIGHT;
+      statePlayer = PlayerStateMachine.MOVE_RIGHT;
       speed.x = 5;
     } else {
       speed.x = 0;
       statePlayer = PlayerStateMachine.IDLE;
     }
 
- 
     // Limitar el movimiento del jugador a la izquierda
     this.camX = max(this.position.x, 0);
     if (position.x < camX-width/2) {
@@ -69,7 +49,6 @@ class Player extends GameObject {
       isJumping = false;
     }
 
-    //println(position.y);
     //Verificar si cayó de la plataforma
     if (position.y>300) {
       lives--;
@@ -85,11 +64,10 @@ class Player extends GameObject {
     }
   }
 
-  void display() {
+  public void display() {
     this.camX = max(this.position.x, 0);
     spritePlayer.renderPlayer(this.statePlayer, this.position, this.camX);
   }
-
 
   public void handleCollision(ArrayList<Platform> platforms) {
     for (Platform p : platforms) {
@@ -103,7 +81,6 @@ class Player extends GameObject {
     }
   }
 
-
   public void jump() {
     if (!isJumping) {
       speed.y = jumpPower* Time.getDeltaTime(frameRate);
@@ -111,13 +88,12 @@ class Player extends GameObject {
     }
   }
 
-  void resetPos() {
+  public void resetPos() {
     position.x=100;
     position.y=300;
   }
 
-
-  void manejarTeclaPresionada() {
+  public void manejarTeclaPresionada() {
     if (key == 'a' || keyCode==LEFT) {
 
       movingLeft = true;
@@ -128,7 +104,7 @@ class Player extends GameObject {
     }
   }
 
-  void manejarTeclaLiberada() {
+  public void manejarTeclaLiberada() {
     if ( key == 'd' ||keyCode == RIGHT) {
       movingRight = false;
     } else if (key == 'a' || keyCode == LEFT) {
