@@ -2,6 +2,7 @@ class Player {
 
   PVector position;
   PVector speed;
+  int lives;
   float gravity = 0.6;
   float jumpPower = -11;
   boolean isJumping = false;
@@ -25,7 +26,7 @@ class Player {
     this.groundLevel = groundLevel;
     this.playerWidth = 200;
     this.playerHeight =200;
-
+    lives = 4;
     isJumping = false;
     playerRight = new PImage[imgsRight.length];
     playerLeft = new PImage[imgsLeft.length];
@@ -84,11 +85,20 @@ class Player {
       speed.y = 0;
       isJumping = false;
     }
-    
+
     println(position.y);
     //Verificar si cayó de la plataforma
-    if(position.y>300){
+    if (position.y>300) {
+      lives--;
       resetPos();
+    }
+
+    //Detiene el juego al peder las vidas
+    if (lives==0) {
+      fill(255);
+      textSize(50);
+      text("Game Over", width / 2 - 100, height / 2);
+      noLoop();
     }
   }
 
@@ -123,11 +133,10 @@ class Player {
       isJumping = true;
     }
   }
-  
-  void resetPos(){
+
+  void resetPos() {
     position.x=100;
     position.y=300;
-    
   }
 
 
@@ -147,7 +156,5 @@ class Player {
     } else if (key == 'a' || keyCode == LEFT) {
       movingLeft = false;
     }
-
-}
-
+  }
 }
