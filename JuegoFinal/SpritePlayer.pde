@@ -48,6 +48,7 @@ class SpritePlayer {
       playerGeneral = playerIdle;
       break;
     }
+    
     imageMode(CENTER);
     // Usar los factores de escala al renderizar la imagen
     image(playerGeneral.get(this.xFrame , this.yFrame , this.widthFrame , this.heightFrame),position.x - camX, position.y,

@@ -11,11 +11,11 @@ void setup() {
   frameRate(60); // Asegurar que el juego se ejecute a 60 fps
   menu = new Menu();
   game = new Game();
-  estadoActual = 0; // 0: Menu, 1: Game, 2: Instructions, 3: Developers
+  estadoActual = 1; // 0: Menu, 1: Game, 2: Instructions, 3: Developers
 }
 
 void draw() {
-  translate(width/2,height/2); // Establece el origen de coordenadas en el centro
+  translate(width/2,height/2); // Establece el origen de coordenadas en el centro - PLANO CARTESIANO
   scale(1,1); // Establece los cuadrantes
   background(0);
 

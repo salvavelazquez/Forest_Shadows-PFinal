@@ -10,8 +10,7 @@ class Player extends GameObject {
   private float  camX = -width/2;
   private boolean movingLeft;
   private boolean movingRight;
-
-
+  
   public Player(float x, float y, float groundLevel ) {
     this.position = new PVector(x, y);
     this.groundLevel = groundLevel;

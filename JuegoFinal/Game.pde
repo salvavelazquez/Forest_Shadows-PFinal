@@ -1,32 +1,33 @@
 class Game {
-  Player player;
-  ArrayList<Platform> platforms = new ArrayList<Platform>();
-  ArrayList<Enemy> enemies1 = new ArrayList<Enemy>();
-  PImage bgImage;
-  PImage platformImage;
-  float  camX = -width/2;
-  float groundLevel;
+  private Player player;
+  private ArrayList<Platform> platforms = new ArrayList<Platform>();
+  private ArrayList<Enemy> enemies1 = new ArrayList<Enemy>();
+  //private PImage bgImage; // BACKGROUND
+  private PImage platformImage;
+  private float  camX = -width/2;
+  private float groundLevel;
 
-  Game() {
+  public Game() {
     this.groundLevel = height/2.23;
-    player = new Player(500, height/2.23, groundLevel);
-    bgImage = loadImage("Images/levels/background2.png"); // Carga tu imagen de fondo aquí
-    platformImage = loadImage("Images/Ground_11.png"); // Carga tu imagen de plataforma aquí
-    // Añadir algunas plataformas
-    platforms.add(new Platform(-width/2, groundLevel - 5, 600, 55));
+    this.player = new Player(0, height/2.23, groundLevel);
+    //bgImage = loadImage("Images/levels/background2.png"); // Carga tu imagen de fondo aquí
+    this.platformImage = loadImage("Images/Ground_11.png"); // Carga tu imagen de plataforma aquí
+    /**Seccion donde se crean las plataformas en el constructor por defecto de la clase Game*/
+    // ---------- P L A T A F O R M A S ---------//
+    platforms.add(new Platform(-width/2, groundLevel +10, 600,55));
     platforms.add(new Platform(0, groundLevel - 5, 600, 55));
-    platforms.add(new Platform(350, groundLevel - 100, 200, 50));
-    // Nuevas plataformas
-    platforms.add(new Platform(1600, groundLevel - 200, 150, 50));
-    platforms.add(new Platform(1830, groundLevel - 118, 90, 40));
-    platforms.add(new Platform(1900, groundLevel - 5, 300, 55));
-    platforms.add(new Platform(2400, groundLevel - 5, 300, 55));
-    platforms.add(new Platform(2750, groundLevel - 90, 200, 55));
+    platforms.add(new Platform(1000, groundLevel - 5, 300, 55));
+    platforms.add(new Platform(1400, groundLevel - 5, 300, 55));
     platforms.add(new Platform(3100, groundLevel - 90, 100, 50));
     platforms.add(new Platform(3250, groundLevel - 5, 1000, 55));
+    // ---------- F L O T A N T E S ---------//
+    platforms.add(new Platform(500, groundLevel - 100, 200, 50));
+    platforms.add(new Platform(600, groundLevel - 200, 150, 50));
+    platforms.add(new Platform(800, groundLevel - 118, 90, 40));
+    platforms.add(new Platform(1550, groundLevel - 90, 200, 55));
 
-    enemies1.add(new Enemy(300, 230, 4));
-    enemies1.add(new Enemy(width - 250, 230, 6));
+    enemies1.add(new Enemy(300, height/3, 4));
+    //enemies1.add(new Enemy(width - 250, 230, 6));
   }
 
   public void display() {

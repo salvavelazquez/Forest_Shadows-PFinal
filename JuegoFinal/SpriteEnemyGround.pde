@@ -10,8 +10,8 @@ class SpriteEnemyGround {
   private float velTransicion;
 
   // Añadir variables para el factor de escala
-  //private float scaleFactorX;
-  //private float scaleFactorY;
+  private float scaleFactorX;
+  private float scaleFactorY;
 
   public SpriteEnemyGround() {
     this.enemyLeft = requestImage("Images/enemyGroundLeft.png");
@@ -25,16 +25,20 @@ class SpriteEnemyGround {
     this.velTransicion = 10;
 
     // Inicializar los factores de escala
-    //this.scaleFactorX = 1.5; // Cambia este valor según sea necesario
-    //this.scaleFactorY = 1.5; // Cambia este valor según sea necesario
+    this.scaleFactorX = 0.3; // Cambia este valor según sea necesario
+    this.scaleFactorY = 0.3; // Cambia este valor según sea necesario
   }
 
   public void renderEnemyGround(int state, PVector position) {
 
     imageMode(CENTER);
     switch (state) {
-      case EnemyGroundStateMachine.MOVE_RIGHT: {
-        image(enemyRight.get(this.xFrame, this.yFrame, this.widthFrame, this.heightFrame), position.x, position.y);
+    case EnemyGroundStateMachine.MOVE_RIGHT:
+      {
+        image(enemyRight.get(this.xFrame, this.yFrame, this.widthFrame, this.heightFrame), position.x, position.y,
+        this.widthFrame * this.scaleFactorX, 
+        this.heightFrame * this.scaleFactorY);
+        
         xFrameFloat += (widthFrame * velTransicion * Time.getDeltaTime(frameRate));
 
         if (xFrameFloat >= nextxFrameFloat) {
@@ -48,8 +52,11 @@ class SpriteEnemyGround {
         }
         break;
       }
-      case EnemyGroundStateMachine.MOVE_LEFT: {
-        image(enemyLeft.get(this.xFrame, this.yFrame, this.widthFrame, this.heightFrame), position.x, position.y);
+    case EnemyGroundStateMachine.MOVE_LEFT:
+      {
+        image(enemyLeft.get(this.xFrame, this.yFrame, this.widthFrame, this.heightFrame), position.x, position.y,
+        this.widthFrame * this.scaleFactorX, 
+        this.heightFrame * this.scaleFactorY);
         xFrameFloat += (widthFrame * velTransicion * Time.getDeltaTime(frameRate));
 
         if (xFrameFloat >= nextxFrameFloat) {
