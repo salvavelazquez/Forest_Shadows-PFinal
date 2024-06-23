@@ -1,6 +1,7 @@
 class Game {
   private Player player;
   private Rays rays;
+  private Boss boss;
   private ArrayList<Platform> platforms = new ArrayList<Platform>();
   private ArrayList<Enemy> enemies1 = new ArrayList<Enemy>();
   //private PImage bgImage; // BACKGROUND
@@ -12,6 +13,7 @@ class Game {
     this.groundLevel = height/2.23;
     this.player = new Player(0, height/2.23, groundLevel);
     this.rays = new Rays();
+    this.boss = new Boss(-width,0);
     //bgImage = loadImage("Images/levels/background2.png"); // Carga tu imagen de fondo aquí
     this.platformImage = loadImage("Images/Ground_11.png"); // Carga tu imagen de plataforma aquí
     /**Seccion donde se crean las plataformas en el constructor por defecto de la clase Game*/
@@ -36,19 +38,22 @@ class Game {
     platforms.add(new Platform(2800, groundLevel - 84, 100, 50));
     
     
-    // ---------- F L O T A N T E S MOVIMIENTO ---------//
+    // ---------- F L O T A N T E S en MOVIMIENTO ---------//
     platforms.add(new PlatformEnMovimiento(4000, groundLevel - 94, 150, 50, 0.03, false));
     platforms.add(new PlatformEnMovimiento(4450, groundLevel - 94, 150, 50, 0.03, false));
     platforms.add(new PlatformEnMovimiento(4950, groundLevel - 94, 150, 50, 0.03, false));
     platforms.add(new PlatformEnMovimiento(5400, groundLevel - 300, 150, 50, 0.03, true));
 
     enemies1.add(new Enemy(300, height/3, 4,400));
-    //enemies1.add(new Enemy(width - 250, 230, 6));
+    enemies1.add(new Enemy(900, height/3, 4,400));
   }
 
   public void display() {
-    background(0); // Un color azul cielo para el fondo
+    background(0);
     rays.display();
+    boss.display();
+    boss.moveSinCos();
+    boss.move();
     player.update();
     player.handleCollision(platforms);
     // Actualizar la cámara
