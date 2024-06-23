@@ -3,8 +3,6 @@ Game game;
 /**Variable que usaremos para el estado a evaluar entre las pantallas*/
 // ------ VARIABLE GLOBAL ------
 int estadoActual;
-//**Variable para indicar si se debe reiniciar el nivel*/
-boolean reiniciarNivel = false;
 
 void setup() {
   fullScreen();

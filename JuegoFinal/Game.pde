@@ -1,5 +1,6 @@
 class Game {
   private Player player;
+  private Rays rays;
   private ArrayList<Platform> platforms = new ArrayList<Platform>();
   private ArrayList<Enemy> enemies1 = new ArrayList<Enemy>();
   //private PImage bgImage; // BACKGROUND
@@ -10,6 +11,7 @@ class Game {
   public Game() {
     this.groundLevel = height/2.23;
     this.player = new Player(0, height/2.23, groundLevel);
+    this.rays = new Rays();
     //bgImage = loadImage("Images/levels/background2.png"); // Carga tu imagen de fondo aquí
     this.platformImage = loadImage("Images/Ground_11.png"); // Carga tu imagen de plataforma aquí
     /**Seccion donde se crean las plataformas en el constructor por defecto de la clase Game*/
@@ -46,6 +48,7 @@ class Game {
 
   public void display() {
     background(0); // Un color azul cielo para el fondo
+    rays.display();
     player.update();
     player.handleCollision(platforms);
     // Actualizar la cámara
