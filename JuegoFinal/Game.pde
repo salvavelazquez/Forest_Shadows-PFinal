@@ -13,7 +13,7 @@ class Game {
     this.groundLevel = height/2.23;
     this.player = new Player(0, height/2.23, groundLevel);
     this.rays = new Rays();
-    this.boss = new Boss(-width,0);
+    this.boss = new Boss(-width,-height/4);
     //bgImage = loadImage("Images/levels/background2.png"); // Carga tu imagen de fondo aquí
     this.platformImage = loadImage("Images/Ground_11.png"); // Carga tu imagen de plataforma aquí
     /**Seccion donde se crean las plataformas en el constructor por defecto de la clase Game*/

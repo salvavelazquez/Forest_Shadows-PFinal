@@ -10,10 +10,10 @@ class Boss extends GameObject {
     this.position=new PVector(x, y);
     this.timer=0;
     this.velocidad = new PVector(100, 1);
-    this.radio = 150;
-    this.escalar = 80;
+    this.radio = 100;
+    this.escalar = 40;
     this.imagen = loadImage("Images/boss.png");
-    this.imagen.resize(200, 200);
+    this.imagen.resize(150, 150);
   }
   public void display() {
     imageMode(CENTER);
@@ -116,9 +116,9 @@ class Boss extends GameObject {
   }
   private void teleport() {
     if (this.position.x<-width) { // este condicion verifica si la posicion es menor al ancho para aparecer
-      this.position.x=-width;
+      this.position.x=-width/2;
     } else if (this.position.x>900) {
-      this.position.x=-width;
+      this.position.x=-width/2;
     }
     if (this.position.y<-width) {
       this.position.y=height;
