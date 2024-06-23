@@ -8,7 +8,7 @@ class SpriteEnemyGround {
   private float xFrameFloat;
   private float nextxFrameFloat;
   private float velTransicion;
-
+ 
   // Añadir variables para el factor de escala
   private float scaleFactorX;
   private float scaleFactorY;
@@ -29,34 +29,15 @@ class SpriteEnemyGround {
     this.scaleFactorY = 0.3; // Cambia este valor según sea necesario
   }
 
-  public void renderEnemyGround(int state, PVector position) {
+  public void renderEnemyGround(int state, PVector position,float camX) {
 
-    imageMode(CENTER);
+     imageMode(CENTER);
     switch (state) {
-    case EnemyGroundStateMachine.MOVE_RIGHT:
-      {
-        image(enemyRight.get(this.xFrame, this.yFrame, this.widthFrame, this.heightFrame), position.x, position.y,
-        this.widthFrame * this.scaleFactorX, 
-        this.heightFrame * this.scaleFactorY);
-        
-        xFrameFloat += (widthFrame * velTransicion * Time.getDeltaTime(frameRate));
-
-        if (xFrameFloat >= nextxFrameFloat) {
-          this.xFrame += this.widthFrame;
-          nextxFrameFloat = xFrame + this.widthFrame;
-          if (this.xFrame >= enemyRight.width) {
-            this.xFrame = 0;
-            this.xFrameFloat = 0;
-            this.nextxFrameFloat = this.widthFrame;
-          }
-        }
-        break;
-      }
-    case EnemyGroundStateMachine.MOVE_LEFT:
-      {
-        image(enemyLeft.get(this.xFrame, this.yFrame, this.widthFrame, this.heightFrame), position.x, position.y,
-        this.widthFrame * this.scaleFactorX, 
-        this.heightFrame * this.scaleFactorY);
+      case EnemyGroundStateMachine.MOVE_LEFT:
+        image(enemyLeft.get(this.xFrame, this.yFrame, this.widthFrame, this.heightFrame), 
+              position.x - camX, position.y,
+              this.widthFrame * this.scaleFactorX, 
+              this.heightFrame * this.scaleFactorY);
         xFrameFloat += (widthFrame * velTransicion * Time.getDeltaTime(frameRate));
 
         if (xFrameFloat >= nextxFrameFloat) {
@@ -69,7 +50,24 @@ class SpriteEnemyGround {
           }
         }
         break;
-      }
+
+      case EnemyGroundStateMachine.MOVE_RIGHT:
+        image(enemyRight.get(this.xFrame, this.yFrame, this.widthFrame, this.heightFrame), 
+              position.x - camX, position.y,
+              this.widthFrame * this.scaleFactorX, 
+              this.heightFrame * this.scaleFactorY);
+        xFrameFloat += (widthFrame * velTransicion * Time.getDeltaTime(frameRate));
+
+        if (xFrameFloat >= nextxFrameFloat) {
+          this.xFrame += this.widthFrame;
+          nextxFrameFloat = xFrame + this.widthFrame;
+          if (this.xFrame >= enemyRight.width) {
+            this.xFrame = 0;
+            this.xFrameFloat = 0;
+            this.nextxFrameFloat = this.widthFrame;
+          }
+        }
+        break;
     }
   }
 }

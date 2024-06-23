@@ -42,7 +42,7 @@ class Game {
     platforms.add(new PlatformEnMovimiento(4950, groundLevel - 94, 150, 50, 0.03, false));
     platforms.add(new PlatformEnMovimiento(5400, groundLevel - 300, 150, 50, 0.03, true));
 
-    enemies1.add(new Enemy(300, height/3, 4));
+    enemies1.add(new Enemy(300, height/3, 4,400));
     //enemies1.add(new Enemy(width - 250, 230, 6));
   }
 
@@ -66,7 +66,7 @@ class Game {
     player.killEnemiesInView(enemies1);
     for (Enemy enemy : enemies1) {
       enemy.update();
-      enemy.display();
+      enemy.display(camX);
     }
     // Dibujar al jugador
     player.display();
