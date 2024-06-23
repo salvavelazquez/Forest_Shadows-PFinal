@@ -26,7 +26,7 @@ class Game {
     platforms.add(new Platform(800, groundLevel - 118, 90, 40));
     platforms.add(new Platform(1550, groundLevel - 90, 200, 55));
 
-    enemies1.add(new Enemy(300, height/3, 4));
+    enemies1.add(new Enemy(300, height/3, 4,400));
     //enemies1.add(new Enemy(width - 250, 230, 6));
   }
 
@@ -46,7 +46,7 @@ class Game {
     player.killEnemiesInView(enemies1);
     for (Enemy enemy : enemies1) {
       enemy.update();
-      enemy.display();
+      enemy.display(camX);
     }
     // Dibujar al jugador
     player.display();

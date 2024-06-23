@@ -146,20 +146,20 @@ class Player extends GameObject {
   }
 
   public void manejarTeclaPresionada() {
-    if (key == 'a' || keyCode==LEFT) {
+    if (key == 'a' ||key == 'A' || keyCode==LEFT) {
 
       movingLeft = true;
-    } else if (key == 'd' || keyCode == RIGHT) {
+    } else if (key == 'd' || key == 'D' ||keyCode == RIGHT) {
       movingRight = true;
-    } else if (key == 'w' || keyCode == UP) {
+    } else if (key == 'w' ||key == 'W' || keyCode == UP) {
       jump();
     }
   }
 
   public void manejarTeclaLiberada() {
-    if ( key == 'd' ||keyCode == RIGHT) {
+    if ( key == 'd' || key == 'D' ||keyCode == RIGHT) {
       movingRight = false;
-    } else if (key == 'a' || keyCode == LEFT) {
+    } else if (key == 'a' || key == 'A' || keyCode == LEFT) {
       movingLeft = false;
     }
   }
