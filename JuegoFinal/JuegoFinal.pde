@@ -9,7 +9,7 @@ void setup() {
   frameRate(60); // Asegurar que el juego se ejecute a 60 fps
   menu = new Menu();
   game = new Game();
-  estadoActual = 1; // 0: Menu, 1: Game, 2: Instructions, 3: Developers
+  estadoActual = 0; // 0: Menu, 1: Game, 2: Instructions, 3: Developers
 }
 
 void draw() {

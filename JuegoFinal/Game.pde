@@ -17,20 +17,20 @@ class Game {
     //bgImage = loadImage("Images/levels/background2.png"); // Carga tu imagen de fondo aquí
     this.platformImage = loadImage("Images/Ground_11.png"); // Carga tu imagen de plataforma aquí
     /**Seccion donde se crean las plataformas en el constructor por defecto de la clase Game*/
-    // ---------- P L A T A F O R M A S ---------//
+    // ---------------- P L A T A F O R M A S  -----------------//
     platforms.add(new Platform(-450, groundLevel +11, 700, 55));
     platforms.add(new Platform(450, groundLevel + 11, 600, 55));
     platforms.add(new Platform(1600, groundLevel + 11, 300, 55));
     platforms.add(new Platform(2100, groundLevel + 11, 300, 55));
     platforms.add(new Platform(2950, groundLevel + 11, 1000, 55));
-    
     platforms.add(new Platform(5800, groundLevel-500, 90, 60));
     platforms.add(new Platform(6180, groundLevel-500, 90, 60));
     platforms.add(new Platform(6300, groundLevel-350, 90, 60));
     platforms.add(new Platform(6400, groundLevel-200, 800, 60));
     platforms.add(new Platform(7000, groundLevel+11, 2000, 55));
     
-    // ---------- F L O T A N T E S ---------//
+    
+    // ----------------- F L O T A N T E S --------------------//
     platforms.add(new Platform(1100, groundLevel - 94, 200, 50));
     platforms.add(new Platform(1300, groundLevel - 194, 150, 50));
     platforms.add(new Platform(1530, groundLevel - 112, 90, 40));
@@ -38,7 +38,7 @@ class Game {
     platforms.add(new Platform(2800, groundLevel - 84, 100, 50));
     
     
-    // ---------- F L O T A N T E S en MOVIMIENTO ---------//
+    // ----------------------- F L O T A N T E S en MOVIMIENTO -------------------------//
     platforms.add(new PlatformEnMovimiento(4000, groundLevel - 94, 150, 50, 0.03, false));
     platforms.add(new PlatformEnMovimiento(4450, groundLevel - 94, 150, 50, 0.03, false));
     platforms.add(new PlatformEnMovimiento(4950, groundLevel - 94, 150, 50, 0.03, false));

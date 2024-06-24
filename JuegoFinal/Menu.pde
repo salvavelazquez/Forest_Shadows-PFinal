@@ -7,11 +7,11 @@ class Menu {
   private Button backButton ;
 
   public Menu() {
-    this.backgroundImage = loadImage("Images/fondo3.jpg");
-    this.playButton = new Button(width / 2 - 100, height / 2, 200, 50, "Play");
-    this.instructionsButton = new Button(width / 2 - 100, height / 2 + 60, 200, 50, "Instrucciones");
-    this.developersButton = new Button(width / 2 - 100, height / 2 + 120, 200, 50, "Desarrolladores");
-    this.backButton = new Button(width / 2 - 100, height / 2 + 160, 220, 50, "Regresar al menú");
+    this.backgroundImage = loadImage("Images/backgroundMenu2.jpg");
+    this.playButton = new Button(100, height / 2, 200, 50, "Play");
+    this.instructionsButton = new Button(100, height / 2 + 60, 200, 50, "Instrucciones");
+    this.developersButton = new Button(100, height / 2 + 120, 200, 50, "Desarrolladores");
+    this.backButton = new Button(100, height / 2 + 160, 220, 50, "Regresar al menú");
   }
   
   public void display() {
