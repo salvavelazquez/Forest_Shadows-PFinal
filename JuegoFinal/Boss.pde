@@ -5,6 +5,12 @@ class Boss extends GameObject {
   private float radio;
   private PImage imagen;
   private float timer;
+  ArrayList<Pelota> pelotas = new ArrayList<Pelota>();
+  float a  = 0.1; // PARABOLA
+  float b =0; //PARABOLA
+  float c=0; //PARABOLA
+  float drop = 8; //
+  float cX, cX1; //
 
   public Boss(float x, float y) {
     this.position=new PVector(x, y);
@@ -18,6 +24,7 @@ class Boss extends GameObject {
   public void display() {
     imageMode(CENTER);
     image(imagen, this.position.x, this.position.y);
+    funcionCuadratica();
   }
   public void moveSinCos() {
     float ang1 = radians(angulo1);
@@ -113,6 +120,43 @@ class Boss extends GameObject {
     this.position.y+=5*(cos(this.timer * 2.0));
     teleport();
     //println(x, y);
+  }
+  public void funcionCuadratica() {
+    if (frameCount % 60 == 10) { // Lanza una pelota cada segundo
+      float velocidadInicial = random(-2,-4);
+      for (float i = -width/2; i < width/2; i += 100) { // Ajusta el incremento para el número de pelotas
+        float anguloLanzamiento = a * pow(i, 2) + b * i + c;
+        PVector velocidad1 = new PVector(velocidadInicial, velocidadInicial);
+        PVector velocidad2 = new PVector(-velocidadInicial, velocidadInicial);
+        //pelota = new Pelota(new PVector(x+i, y+anguloLanzamiento), velocidad1);
+        pelotas.add(new Pelota(new PVector(this.position.x + i, this.position.y + anguloLanzamiento), velocidad1));
+        pelotas.add(new Pelota(new PVector(this.position.x + i, this.position.y + anguloLanzamiento), velocidad2));
+      }
+    }
+
+    for (Pelota pelota : pelotas) {
+      pelota.mover();
+      pelota.display();
+    }
+    /**
+    float posY = a *pow(cX, 2) + b * cX + c;
+
+    float newCX = cX + this.position.x;
+    float newCY = posY + this.position.y;
+    float newCX1 = cX1 + this.position.x;
+    fill(#6F2586);
+    ellipse(newCX, newCY, 20, 20);
+    fill(#6F2586);
+    ellipse(newCX1, newCY, 20, 20);
+
+
+    // Actualizar la posición x del objeto
+    cX += drop;
+    cX1 -= drop;
+    if (posY > 500) {
+      cX = 0; // Reiniciar a la izquierda si sale de la pantalla
+      cX1 = 0;
+    }*/
   }
   private void teleport() {
     if (this.position.x<-width) { // este condicion verifica si la posicion es menor al ancho para aparecer
