@@ -138,25 +138,6 @@ class Boss extends GameObject {
       pelota.mover();
       pelota.display();
     }
-    /**
-    float posY = a *pow(cX, 2) + b * cX + c;
-
-    float newCX = cX + this.position.x;
-    float newCY = posY + this.position.y;
-    float newCX1 = cX1 + this.position.x;
-    fill(#6F2586);
-    ellipse(newCX, newCY, 20, 20);
-    fill(#6F2586);
-    ellipse(newCX1, newCY, 20, 20);
-
-
-    // Actualizar la posición x del objeto
-    cX += drop;
-    cX1 -= drop;
-    if (posY > 500) {
-      cX = 0; // Reiniciar a la izquierda si sale de la pantalla
-      cX1 = 0;
-    }*/
   }
   private void teleport() {
     if (this.position.x<-width) { // este condicion verifica si la posicion es menor al ancho para aparecer

@@ -137,6 +137,7 @@ class Player extends GameObject {
     if (!isJumping) {
       speed.y = jumpPower* Time.getDeltaTime(frameRate);
       isJumping = true;
+      //statePlayer = 
     }
   }
 
