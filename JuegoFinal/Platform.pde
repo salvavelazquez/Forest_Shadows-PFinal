@@ -1,5 +1,5 @@
 class Platform {
-  private float x, y, w, h;
+  protected float x, y, w, h;
 
   public Platform(float x, float y, float w, float h) {
     this.x = x;

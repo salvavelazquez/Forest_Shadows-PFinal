@@ -13,7 +13,7 @@ class Button {
 
   public void display() {
     noStroke();
-    fill(102, 0, 153, 200);
+    fill(0);
     if (mouseEstaEncima()) {
       fill(50, 100, 250, 200);
     }

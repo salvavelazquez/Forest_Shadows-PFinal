@@ -44,6 +44,7 @@ class SpritePlayer {
     case PlayerStateMachine.MOVE_LEFT:
       playerGeneral = playerLeft;
       break;
+      case PlayerStateMachine.JUMP:
     default:
       playerGeneral = playerIdle;
       break;
