@@ -11,7 +11,7 @@ class Game {
 
   public Game() {
     this.groundLevel = height/2.23;
-    this.player = new Player(0, height/2.23, groundLevel);
+    this.player = new Player(0, 0, groundLevel);
     this.rays = new Rays();
     this.boss = new Boss(-width,-height/4);
     //bgImage = loadImage("Images/levels/background2.png"); // Carga tu imagen de fondo aquí
@@ -49,6 +49,9 @@ class Game {
   }
 
   public void display() {
+    if (frameRate == 0 && frameRate >= 15){
+      
+    }
     background(0);
     rays.display();
     boss.display();

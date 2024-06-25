@@ -16,7 +16,7 @@ void draw() {
   translate(width/2,height/2); // Establece el origen de coordenadas en el centro - PLANO CARTESIANO
   scale(1,1); // Establece los cuadrantes
   background(0);
-
+  
   if (estadoActual == 0) {
     menu.display();
   } else if (estadoActual == 1) {
