@@ -1,5 +1,6 @@
 class Enemy extends GameObject {
   private PVector velocity;
+  PVector gravedad = new PVector(0, 0.1);
   private SpriteEnemyGround spriteEnemyGround;
   private int stateEnemyGround;
   private float leftLimit;   // Límite izquierdo
@@ -14,7 +15,6 @@ class Enemy extends GameObject {
     this.rightLimit= x + range / 2; //Rango del movimiento cuando va hacia la derecha
   }
 
-
   public void update() {
     // Cambiar la dirección si llega los límites del rango de movimiento
     if (this.position.x <= this.leftLimit) {
@@ -28,7 +28,6 @@ class Enemy extends GameObject {
   }
 
   public void display(float camX) {
-
     spriteEnemyGround.renderEnemyGround(this.stateEnemyGround, this.position, camX);
   }
 }

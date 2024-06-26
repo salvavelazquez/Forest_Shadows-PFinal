@@ -1,154 +1,128 @@
 class Boss extends GameObject {
   private PVector velocidad;
-  private float angulo1, angulo2, angulo3, angulo4, angulo5, angulo6, angulo7, angulo8, angulo9, angulo10;
-  private float escalar;
-  private float radio;
   private PImage imagen;
   private float timer;
-  ArrayList<Pelota> pelotas = new ArrayList<Pelota>();
-  float a  = 0.1; // PARABOLA
-  float b =0; //PARABOLA
-  float c=0; //PARABOLA
-  float drop = 8; //
-  float cX, cX1; //
+  private float lastLaunchFrame; // Temporizador para controlar el intervalo entre lanzamientos
+  private float startLaunchFrame; // Temporizador para el inicio del lanzamiento
+  private ArrayList<Pelota> pelotas;
+  private ArrayList<Egg> eggs;
+  private float radio;
+  private int numPelotas;
+  private float anguloInicial;
+  private float a = 0.1; // Parábola
+  private float b = 0; // Parábola
+  private float c = 0; // Parábola
+  private int maxEnemies = 7; // Máximo número de enemigos permitidos
+  private ArrayList<Enemy> enemies1; // Declarar la lista de enemigos
 
-  public Boss(float x, float y) {
-    this.position=new PVector(x, y);
-    this.timer=0;
+
+  public Boss(float x, float y, ArrayList<Enemy> enemies1) {
+    this.position = new PVector(x, y);
+    this.timer = 0;
+    this.lastLaunchFrame = 0; // Inicializar el temporizador
+    this.startLaunchFrame = 300; // El boss comenzará a lanzar huevos después de este tiempo (frames)
     this.velocidad = new PVector(100, 1);
     this.radio = 100;
-    this.escalar = 40;
+    this.numPelotas = 7; // Número inicial de pelotas
+    this.anguloInicial = 0;
+    this.pelotas = new ArrayList<Pelota>();
+    this.eggs = new ArrayList<Egg>();
     this.imagen = loadImage("Images/boss.png");
     this.imagen.resize(150, 150);
+    this.enemies1 = enemies1;
+    crearPelotas(); // Crear pelotas alrededor del Boss
   }
+
   public void display() {
+    actualizarPelotas(); // Actualizar posiciones de las pelotas
+
+    if (frameCount > startLaunchFrame) { // Determina si pasaron tantos frames
+      lanzarEggs(); // Lanza los huevos
+    }
     imageMode(CENTER);
     image(imagen, this.position.x, this.position.y);
-    funcionCuadratica();
-  }
-  public void moveSinCos() {
-    float ang1 = radians(angulo1);
-    float ang2 = radians(angulo2);
-    float ang3 = radians(angulo3);
-    float ang4 = radians(angulo4);
-    float ang5 = radians(angulo5);
-    float ang6 = radians(angulo6);
-    float ang7 = radians(angulo7);
-    float ang8 = radians(angulo8);
-    float ang9 = radians(angulo9);
-    float ang10 = radians(angulo10);
-
-    // Calculos de las nuevas posiciones x e y usando coseno y seno
-    float x1 = this.position.x + (radio * cos(ang1));
-    float y1 = this.position.y + (radio * sin(ang1));
-
-    float x2 = this.position.x + (radio * cos(ang2));
-    float y2 = this.position.y + (radio * sin(ang2));
-
-    float x3 = this.position.x + (radio * cos(ang3));
-    float y3 = this.position.y + (radio * sin(ang3));
-
-    float x4 = this.position.x + (radio * cos(ang4));
-    float y4 = this.position.y + (radio * sin(ang4));
-
-    float x5 = this.position.x + (radio * cos(ang5));
-    float y5 = this.position.y + (radio * sin(ang5));
-
-    float x6 = this.position.x + (radio * cos(ang6));
-    float y6 = this.position.y + (radio * sin(ang6));
-
-    float x7 = this.position.x + (radio * cos(ang7));
-    float y7 = this.position.y + (radio * sin(ang7));
-
-    float x8 = this.position.x + (radio * cos(ang8));
-    float y8 = this.position.y + (radio * sin(ang8));
-
-    float x9 = this.position.x + (radio * cos(ang9));
-    float y9 = this.position.y + (radio * sin(ang9));
-
-    float x10 = this.position.x + (radio * cos(ang10));
-    float y10 = this.position.y + (radio * sin(ang10));
-
-    fill(#6F2586);
-    ellipse(x1, y1, escalar / 2, escalar / 2); //  el primer círculo
-    ellipse(x2, y2, escalar / 2, escalar / 2); //  el segundo círculo
-
-    fill(#6F2586);
-    ellipse(x3, y3, escalar / 2, escalar / 2); //  el tercer círculo
-    ellipse(x4, y4, escalar / 2, escalar / 2); //  el cuarto círculo
-
-    fill(#6F2586);
-    ellipse(x5, y5, escalar / 2, escalar / 2); //  el quinto círculo
-    ellipse(x6, y6, escalar / 2, escalar / 2); //  el sexto círculo
-
-    fill(#6F2586);
-    ellipse(x7, y7, escalar / 2, escalar / 2); //  el septimo círculo
-    ellipse(x8, y8, escalar / 2, escalar / 2); //  el octavo círculo
-
-    fill(#6F2586);
-    ellipse(x9, y9, escalar / 2, escalar / 2); //  el noveno círculo
-    ellipse(x10, y10, escalar / 2, escalar / 2); //  el decimo círculo
-
-    // Incrementa los ángulos de forma uniforme
-    angulo1 += 1;
-    angulo2 += 2;
-    angulo3 += 3;
-    angulo4 += 4;
-    angulo5 += 5;
-    angulo6 += 6;
-    angulo7 += 7;
-    angulo8 += 8;
-    angulo9 += 9;
-    angulo10 += 10;
-
-    // Mantener los ángulos dentro del rango de 0 a 360 grados
-    if (angulo1 >= 360) angulo1 = 0;
-    if (angulo2 >= 360) angulo2 = 0;
-    if (angulo3 >= 360) angulo3 = 0;
-    if (angulo4 >= 360) angulo4 = 0;
-    if (angulo5 >= 360) angulo5 = 0;
-    if (angulo6 >= 360) angulo6 = 0;
-    if (angulo7 >= 360) angulo7 = 0;
-    if (angulo8 >= 360) angulo8 = 0;
-    if (angulo9 >= 360) angulo9 = 0;
-    if (angulo10 >= 360) angulo10 = 0;
-  }
-  /**Metodo hecho para realizar los movimientos del jugador, mediante las direcciones en x e y.*/
-  public void move() {
-    this.timer += Time.getDeltaTime(frameRate);
-    this.position.x+=this.velocidad.x * Time.getDeltaTime(frameRate);
-    this.position.y+=5*(cos(this.timer * 2.0));
-    teleport();
-    //println(x, y);
-  }
-  public void funcionCuadratica() {
-    if (frameCount % 60 == 10) { // Lanza una pelota cada segundo
-      float velocidadInicial = random(-2,-4);
-      for (float i = -width/2; i < width/2; i += 100) { // Ajusta el incremento para el número de pelotas
-        float anguloLanzamiento = a * pow(i, 2) + b * i + c;
-        PVector velocidad1 = new PVector(velocidadInicial, velocidadInicial);
-        PVector velocidad2 = new PVector(-velocidadInicial, velocidadInicial);
-        //pelota = new Pelota(new PVector(x+i, y+anguloLanzamiento), velocidad1);
-        pelotas.add(new Pelota(new PVector(this.position.x + i, this.position.y + anguloLanzamiento), velocidad1));
-        pelotas.add(new Pelota(new PVector(this.position.x + i, this.position.y + anguloLanzamiento), velocidad2));
-      }
-    }
-
     for (Pelota pelota : pelotas) {
-      pelota.mover();
       pelota.display();
     }
   }
-  private void teleport() {
-    if (this.position.x<-width) { // este condicion verifica si la posicion es menor al ancho para aparecer
-      this.position.x=-width/2;
-    } else if (this.position.x>900) {
-      this.position.x=-width/2;
+
+  public void move() {
+    this.timer += Time.getDeltaTime(frameRate);
+    this.position.x += this.velocidad.x * Time.getDeltaTime(frameRate);
+    this.position.y += 5 * cos(this.timer * 2.0);
+    teleport();
+
+    verificarColisiones();
+  }
+
+  private void crearPelotas() {
+    pelotas.clear();
+    for (int i = 0; i < numPelotas; i++) {
+      float angulo = anguloInicial + TWO_PI / numPelotas * i;
+      float x = this.position.x + cos(angulo) * radio;
+      float y = this.position.y + sin(angulo) * radio;
+      pelotas.add(new Pelota(x, y, 30, angulo, 0.03));
     }
-    if (this.position.y<-width) {
-      this.position.y=height;
-    } else if (this.position.y>width) {
-      this.position.y=0;
+  }
+
+  private void actualizarPelotas() {
+    float anguloDelta = 0.05;
+    for (int i = 0; i < pelotas.size(); i++) {
+      Pelota pelota = pelotas.get(i);
+      float angulo = anguloInicial + TWO_PI / numPelotas * i;
+      pelota.pos.x = this.position.x + cos(angulo + anguloDelta * frameCount) * radio;
+      pelota.pos.y = this.position.y + sin(angulo + anguloDelta * frameCount) * radio;
+    }
+  }
+
+  private void lanzarEggs() {
+    if (pelotas.size() > 0 && (frameCount - lastLaunchFrame) > 120 &&  enemies1.size() < maxEnemies) { // Lanza un huevo cada segundo si hay pelotas disponibles
+      Pelota pelota1 = pelotas.size() > 0 ? pelotas.remove(0) : null; // Remueve la primera pelota del ArrayList si existe
+      Pelota pelota2 = pelotas.size() > 0 ? pelotas.remove(0) : null; // Remueve la segunda pelota del ArrayList si existe
+      float velocidadInicial = random(-2, -4);
+      for (int i = 0; i < 2; i++) {
+        float anguloLanzamiento = a * pow(i, 2) + b * i + c;
+        PVector velocidad1 = new PVector(velocidadInicial, velocidadInicial);
+        PVector velocidad2 = new PVector(-velocidadInicial, velocidadInicial);
+        eggs.add(new Egg(new PVector(this.position.x + i, this.position.y + anguloLanzamiento), velocidad1));
+        eggs.add(new Egg(new PVector(this.position.x + i, this.position.y + anguloLanzamiento), velocidad2));
+      }
+      lastLaunchFrame = frameCount; // Reiniciar el contador de frames
+    }
+    for (Egg egg : eggs) {
+      egg.mover();
+      egg.display();
+    }
+  }
+
+  private void teleport() {
+    if (this.position.x < -width) {
+      this.position.x = -width / 2;
+      maxEnemies = 7; // Reiniciar el límite de enemigos al teletransportarse
+    } else if (this.position.x > 900) {
+      crearPelotas();
+      this.position.x = -width / 2;
+      maxEnemies = 7; // Reiniciar el límite de enemigos al teletransportarse
+    }
+    if (this.position.y < -width) {
+      this.position.y = height;
+    } else if (this.position.y > width) {
+      this.position.y = 0;
+    }
+  }
+
+  private void verificarColisiones() {
+    // Usar un bucle for para recorrer la lista y remover los elementos fuera de la pantalla
+    for (int i = eggs.size() - 1; i >= 0; i--) {
+      Egg egg = eggs.get(i);
+
+      if (egg.posicion.y > 300) { // Asegurarse de que los huevos caigan fuera de la pantalla
+        if (enemies1.size() < maxEnemies) {
+          enemies1.add(new Enemy(egg.posicion.x, 300, 4, 400));
+          maxEnemies++;
+        }
+        eggs.remove(i);
+      }
     }
   }
 }

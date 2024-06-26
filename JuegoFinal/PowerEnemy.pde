@@ -1,20 +1,17 @@
 class Pelota {
-  PVector posicion;
-  PVector velocidad;
-  PVector gravedad = new PVector(0, 0.1);
-
-
-  Pelota(PVector posicion, PVector velocidad) {
-    this.posicion = posicion;
-    this.velocidad = velocidad;
-  }
-
-  void mover() {
-    velocidad.add(gravedad);
-    posicion.add(velocidad);
+  PVector pos;
+  float diametro;
+  float angulo;
+  float velocidadAngulo;
+  
+  Pelota(float x, float y, float diam, float angulo, float velAngulo) {
+    this.pos = new PVector(x, y);
+    this.diametro = diam;
+    this.angulo = angulo;
+    this.velocidadAngulo = velAngulo;
   }
 
   void display() {
-    ellipse(posicion.x, posicion.y, 20, 20);
+    ellipse(pos.x, pos.y, diametro, diametro);
   }
 }
