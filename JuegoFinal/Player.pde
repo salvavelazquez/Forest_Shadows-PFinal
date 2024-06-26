@@ -10,11 +10,12 @@ class Player extends GameObject {
   private float  camX = -width/2;
   private boolean movingLeft;
   private boolean movingRight;
+  private boolean spacePress;
   // Inicializar los vectores
   Vector vectorPersonaje;
   Vector vectorPersonajeEnemigo;
-  
-  
+
+
   public Player(float x, float y, float groundLevel ) {
     this.position = new PVector(x, y);
     this.groundLevel = groundLevel;
@@ -24,6 +25,7 @@ class Player extends GameObject {
     this.lives = 4;
     this.movingLeft = false;
     this.movingRight = false;
+    this.spacePress=false;
     // Inicializar los vectores
     vectorPersonaje = new Vector(new PVector(x, y), new PVector(1, 0));
     vectorPersonajeEnemigo = new Vector(new PVector(x, y), new PVector(1, 0));
@@ -40,6 +42,11 @@ class Player extends GameObject {
     } else {
       speed.x = 0;
       statePlayer = PlayerStateMachine.IDLE;
+    }
+
+
+    if (spacePress) {
+      campoVision();
     }
 
     // Limitar el movimiento del jugador a la izquierda
@@ -73,7 +80,6 @@ class Player extends GameObject {
   public void display() {
     this.camX = max(this.position.x, 0);
     spritePlayer.renderPlayer(this.statePlayer, this.position, this.camX);
-    campoVision() ;
   }
 
   public void handleCollision(ArrayList<Platform> platforms) {
@@ -117,13 +123,16 @@ class Player extends GameObject {
     } else if (movingLeft) {
       direction = new PVector(-1, 0);
     }
-
     if (direction.mag() > 0) {
       for (int i = enemies.size() - 1; i >= 0; i--) {
         Enemy enemy = enemies.get(i);
         PVector toEnemy = PVector.sub(enemy.position, this.position);
         float distance = toEnemy.mag();
-        if (distance < fovRadius) {
+        if (1000<distance) {  //Verifica si el enemigo está muy lejos del jugador
+          enemies.remove(i); // Elimina el enemigo del ArrayList
+        }
+
+        if ((distance < fovRadius && spacePress) ) {
           float angleToEnemy = PVector.angleBetween(direction, toEnemy);
           if (abs(angleToEnemy) < anguloVision) {
             enemies.remove(i); // Elimina el enemigo del ArrayList
@@ -137,7 +146,7 @@ class Player extends GameObject {
     if (!isJumping) {
       speed.y = jumpPower* Time.getDeltaTime(frameRate);
       isJumping = true;
-      //statePlayer = 
+      //statePlayer =
     }
   }
 
@@ -154,6 +163,8 @@ class Player extends GameObject {
       movingRight = true;
     } else if (key == 'w' ||key == 'W' || keyCode == UP) {
       jump();
+    } else if (keyCode==32) {
+      spacePress=true;
     }
   }
 
@@ -162,6 +173,8 @@ class Player extends GameObject {
       movingRight = false;
     } else if (key == 'a' || key == 'A' || keyCode == LEFT) {
       movingLeft = false;
+    } else if (keyCode==32) {
+      spacePress=false;
     }
   }
 }
