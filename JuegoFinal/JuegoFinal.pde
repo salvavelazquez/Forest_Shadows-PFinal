@@ -1,3 +1,5 @@
+import processing.sound.*;
+
 Menu menu;
 Game game;
 /**Variable que usaremos para el estado a evaluar entre las pantallas*/
@@ -8,7 +10,7 @@ void setup() {
   fullScreen();
   frameRate(60); // Asegurar que el juego se ejecute a 60 fps
   menu = new Menu();
-  game = new Game();
+  game = new Game(this);
   estadoActual = 0; // 0: Menu, 1: Game, 2: Instructions, 3: Developers
 }
 

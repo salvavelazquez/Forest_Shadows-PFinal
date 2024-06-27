@@ -13,13 +13,14 @@ class Button {
 
   public void display() {
     noStroke();
-    fill(0);
+    fill(227,96,14,200);
     if (mouseEstaEncima()) {
-      fill(50, 100, 250, 200);
+      fill(119, 50, 250, 200);
+      //fill(50, 100, 250, 200);
     }
     rect(x, y, ancho, alto, 10);
     fill(255);
-    textSize(24);
+    textSize(45);
     textAlign(CENTER, CENTER);
     text(texto, x + ancho / 2, y + alto / 2);
   }

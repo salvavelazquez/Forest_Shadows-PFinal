@@ -8,10 +8,10 @@ class Menu {
 
   public Menu() {
     this.backgroundImage = loadImage("Images/backgroundMenu2.jpg");
-    this.playButton = new Button(100, height / 2, 200, 50, "Play");
-    this.instructionsButton = new Button(100, height / 2 + 60, 200, 50, "Instrucciones");
-    this.developersButton = new Button(100, height / 2 + 120, 200, 50, "Desarrolladores");
-    this.backButton = new Button(100, height / 2 + 160, 220, 50, "Regresar al menú");
+    this.playButton = new Button(500, height / 2 - 70, 360, 60, "Play");
+    this.instructionsButton = new Button(500, height / 2 +5 , 360, 60, "Instrucciones");
+    this.developersButton = new Button(500, height / 2 + 80, 360, 60, "Desarrolladores");
+    this.backButton = new Button(width-320, height-115 , 220, 70, "Regresar");
   }
   
   public void display() {
@@ -22,7 +22,7 @@ class Menu {
     textSize(80);
     textAlign(CENTER);
     textFont(createFont("Arial Bold", 80)); 
-    text("The Game", width / 2, height / 4);
+    text("Forest Shadows", width / 2, height / 4);
     playButton.display();
     instructionsButton.display();
     developersButton.display();
@@ -34,9 +34,12 @@ class Menu {
     resetMatrix();
     image(this.backgroundImage, 0, 0, width, height);
     fill(255);
-    textSize(24);
-    textAlign(CENTER);
-    text("Usa las teclas A y D para moverte y la tecla W para saltar.", width/2, height/2);
+    textSize(30);
+    textAlign(LEFT);
+    text("Instrucciones:\n" +
+         "Usa las teclas A y D o la flecha izquierda y derecha para moverte.\n" +
+         "Usa la tecla W o la flecha hacia arriba para saltar.\n" +
+         "Presiona la barra espaciadora más una tecla de movimiento para \nactivar el poder de visión.", 230, 300);
     backButton.display();
     popMatrix();    
   }
@@ -46,15 +49,15 @@ class Menu {
     resetMatrix();
     image(this.backgroundImage, 0, 0, width, height);
     fill(255);
-    textSize(30);
+    textSize(40);
     textAlign(CENTER);
-    text("DEVELOPERS", width / 2, this.up);
-    text("- Alejandro Mercado", width / 2, this.up + 40);
-    text("- Leonardo Guanuco", width / 2, this.up + 80);
-    text("- Augusto Velazquez", width / 2, this.up + 120);
+    text(" DEVELOPERS", width / 2, this.up);
+    text("-> Alejandro Mercado", width / 2, this.up + 70);
+    text("-> Leonardo Guanuco", width / 2, this.up + 130);
+    text("-> Augusto Velazquez", width / 2, this.up + 190);
     this.up -= 100 * Time.getDeltaTime(frameRate);
-    if (this.up < height / 2 - 60) {
-      this.up = height / 2 - 60; // Para detener texto en el mdio
+    if (this.up < height / 2 - 90) {
+      this.up = height / 2 - 90; // Para detener texto en el mdio
     }
     backButton.display();
     popMatrix();    
