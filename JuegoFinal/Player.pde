@@ -72,7 +72,17 @@ class Player extends GameObject {
     if (lives==0) {
       fill(255);
       textSize(50);
-      text("Game Over", 0, 0);
+      text("Game Over", -100, 0);
+      noLoop();
+    }
+    
+    // Verificar colisión con el castillo para ganar el juego
+    if (position.x  >= 8850 && position.x <= 8950 &&
+        position.y + 90 >= 300 && position.y <= 290) {
+      fill(255);
+      textSize(50);
+      textAlign(CENTER, CENTER);
+      text("Winner!", -50, 0);
       noLoop();
     }
   }
@@ -128,9 +138,9 @@ class Player extends GameObject {
         Enemy enemy = enemies.get(i);
         PVector toEnemy = PVector.sub(enemy.position, this.position);
         float distance = toEnemy.mag();
-        if (1000<distance) {  //Verifica si el enemigo está muy lejos del jugador
-          enemies.remove(i); // Elimina el enemigo del ArrayList
-        }
+        //if (1000<distance) {  //Verifica si el enemigo está muy lejos del jugador
+        //  enemies.remove(i); // Elimina el enemigo del ArrayList
+        //}
 
         if ((distance < fovRadius && spacePress) ) {
           float angleToEnemy = PVector.angleBetween(direction, toEnemy);
