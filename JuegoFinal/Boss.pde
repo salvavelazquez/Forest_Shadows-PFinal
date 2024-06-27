@@ -118,8 +118,8 @@ class Boss extends GameObject {
 
       if (egg.posicion.y > 300) { // Asegurarse de que los huevos caigan fuera de la pantalla
         if (enemies1.size() < maxEnemies) {
-          enemies1.add(new Enemy(egg.posicion.x, 300, 4, 400));
-          maxEnemies++;
+          enemies1.add(new Enemy(egg.posicion.x, 300, random(1, 5), true));
+          //maxEnemies++;
         }
         eggs.remove(i);
       }
