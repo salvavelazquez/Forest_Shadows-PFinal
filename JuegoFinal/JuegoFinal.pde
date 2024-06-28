@@ -5,55 +5,67 @@ Game game;
 /**Variable que usaremos para el estado a evaluar entre las pantallas*/
 // ------ VARIABLE GLOBAL ------
 int estadoActual;
+int estadoMenu;
 
 void setup() {
   fullScreen();
   frameRate(60); // Asegurar que el juego se ejecute a 60 fps
   menu = new Menu();
-  game = new Game(this);
-  estadoActual = 0; // 0: Menu, 1: Game, 2: Instructions, 3: Developers
+  game = new Game();
+  estadoActual = StateMachine.MENU; // 0: Menu, 1: Game, 2: Instructions, 3: Developers
+  estadoMenu = StateMachine.MENU; // 0: Menu, 1: Game, 2: Instructions, 3: Developers
 }
 
 void draw() {
-  translate(width/2,height/2); // Establece el origen de coordenadas en el centro - PLANO CARTESIANO
-  scale(1,1); // Establece los cuadrantes
-  background(0);
-  
-  if (estadoActual == 0) {
-    menu.display();
-  } else if (estadoActual == 1) {
-    game.display();
-  } else if (estadoActual == 2) {
-    menu.displayInstructions();
-  } else if (estadoActual == 3) {
-    menu.displayDevelopers();
+  translate(width/2, height/2); // Establece el origen de coordenadas en el centro - PLANO CARTESIANO
+  scale(1, 1); // Establece los cuadrantes
+  switch(estadoActual) {
+  case StateMachine.MENU:
+    {
+      menu.display();
+      if (estadoMenu == StateMachine.INSTRUCTING) {
+        menu.displayInstructions();
+      } else if (estadoMenu == StateMachine.DEVS) {
+        menu.displayDevelopers();
+      }
+      break;
+    }
+  case StateMachine.PLAYING:
+    {
+      game.display();
+      break;
+    }
   }
 }
 
 void mousePressed() {
-  if (estadoActual == 0) {
-    menu.mouseControladorMenu();
-  } else if (estadoActual == 1) {
-    game.mouseControladorGame();
-  } else if (estadoActual == 2) {
-    menu.mouseControladorInstrucciones();
-  } else if (estadoActual == 3) {
-    menu.mouseControladorDesarrolladores();
+  switch(estadoActual) {
+  case StateMachine.MENU:
+    {
+      menu.mouseControladorMenu();
+      menu.mouseControladorInstrucciones();
+      menu.mouseControladorDesarrolladores();
+      break;
+    }
   }
 }
 
 void keyPressed() {
-  if (estadoActual == 1) {
-    game.tecladoControladorGame();
-  } else if (estadoActual == 2 ) {
-    estadoActual = 0;
-  } else if (estadoActual == 3) {
-    estadoActual = 0;
+  switch(estadoActual) {
+  case StateMachine.PLAYING:
+    {
+      game.tecladoControladorGame();
+      break;
+    }
   }
 }
 
 void keyReleased() {
-  if (estadoActual == 1) {
-    game.tecladoLiberadoGame();
+  switch(estadoActual) {
+  case StateMachine.PLAYING:
+    {
+      game.tecladoLiberadoGame();
+      break;
+    }
   }
 }

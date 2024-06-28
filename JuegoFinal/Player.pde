@@ -79,11 +79,7 @@ class Player extends GameObject {
     // Verificar colisión con el castillo para ganar el juego
     if (position.x  >= 8850 && position.x <= 8950 &&
         position.y + 90 >= 300 && position.y <= 290) {
-      fill(255);
-      textSize(50);
-      textAlign(CENTER, CENTER);
-      text("Winner!", -50, 0);
-      noLoop();
+          gameOver();
     }
   }
 
@@ -186,5 +182,12 @@ class Player extends GameObject {
     } else if (keyCode==32) {
       spacePress=false;
     }
+  }
+  public void gameOver(){
+      fill(255);
+      textSize(50);
+      textAlign(CENTER, CENTER);
+      text("Winner!", -50, 0);
+      noLoop();
   }
 }

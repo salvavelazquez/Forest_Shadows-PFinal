@@ -19,6 +19,10 @@ class Enemy extends GameObject {
     //this.rightLimit= x + range / 2; //Rango del movimiento cuando va hacia la derecha
     
   }
+  
+  public void display(float camX) {
+    spriteEnemyGround.renderEnemyGround(this.stateEnemyGround, this.position, camX);
+  }
 
   public void update(float camX, ArrayList<Platform> platforms) {
      if (abs(position.x - camX) < width) { // Solo actualizar si la cámara está cerca
@@ -65,9 +69,5 @@ class Enemy extends GameObject {
     //  this.stateEnemyGround = EnemyGroundStateMachine.MOVE_LEFT;//Carga el estado de los sprites hacia la derecha
     //}
     //this.position.add(this.velocity);
-  }
-
-  public void display(float camX) {
-    spriteEnemyGround.renderEnemyGround(this.stateEnemyGround, this.position, camX);
   }
 }

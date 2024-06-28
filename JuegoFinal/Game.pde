@@ -7,21 +7,21 @@ class Game {
   private PImage platformImage, portalImage;
   private float camX = -width/2;
   private float groundLevel;
-  private SoundFile ambientSound, lightningSound;
+  //private SoundFile ambientSound, lightningSound;
 
-  public Game(PApplet p) {
+  public Game() {
     this.groundLevel = height/2.23;
     this.player = new Player(0, 0, groundLevel);
     this.rays = new Rays();
     this.boss = new Boss(-width, -height/4, enemies);
     this.platformImage = loadImage("Images/Ground_11.png");
     this.portalImage = loadImage("Images/portal.png");
-    
+
     //Sound
-    this.ambientSound = new SoundFile(p, "Sound/ambientSound.mp3");
-    this.lightningSound = new SoundFile(p, "Sound/lightningSound.mp3");
-    ambientSound.loop();
-    lightningSound.loop();
+    /**this.ambientSound = new SoundFile(p, "Sound/ambientSound.mp3");
+     this.lightningSound = new SoundFile(p, "Sound/lightningSound.mp3");
+     ambientSound.loop();
+     lightningSound.loop();*/
 
     // Creación de plataformas
     platforms.add(new Platform(-450, groundLevel + 13, 700, 55));
@@ -30,13 +30,13 @@ class Game {
     platforms.add(new Platform(2100, groundLevel + 13, 300, 55));
     platforms.add(new Platform(2950, groundLevel + 13, 1000, 55));
     platforms.add(new Platform(7000, groundLevel + 13, 2000, 55));
-    
+
     platforms.add(new Platform(1100, groundLevel - 94, 200, 50));
     platforms.add(new Platform(1300, groundLevel - 194, 150, 50));
     platforms.add(new Platform(1530, groundLevel - 112, 90, 40));
     platforms.add(new Platform(2450, groundLevel - 84, 200, 55));
     platforms.add(new Platform(2800, groundLevel - 84, 100, 50));
-    
+
     platforms.add(new Platform(5800, groundLevel - 500, 90, 60));
     platforms.add(new Platform(6180, groundLevel - 500, 90, 60));
     platforms.add(new Platform(6300, groundLevel - 350, 90, 60));
@@ -46,19 +46,19 @@ class Game {
     platforms.add(new PlatformEnMovimiento(4450, groundLevel - 94, 150, 50, 0.03, false));
     platforms.add(new PlatformEnMovimiento(4950, groundLevel - 94, 150, 50, 0.03, false));
     platforms.add(new PlatformEnMovimiento(5400, groundLevel - 300, 150, 50, 0.03, true));
+
+    /**enimies
+    enemies.add(new Enemy(2460, groundLevel -200, random(3, 6), true));
+    enemies.add(new Enemy(3000, groundLevel -200, random(3, 6), true));
+    enemies.add(new Enemy(6450, groundLevel -300, random(3, 6), true));
+    enemies.add(new Enemy(7250, groundLevel -100, random(3, 6), true));*/
     
-    //enimies 
-    enemies.add(new Enemy(2460, groundLevel -200 , random(3, 6), true));
-    enemies.add(new Enemy(3000, groundLevel -200 , random(3, 6), true));
-    enemies.add(new Enemy(6450, groundLevel -300 , random(3, 6), true));
-    enemies.add(new Enemy(7250, groundLevel -100 , random(3, 6), true));
-}
+  }
 
   public void display() {
     background(0);
     rays.display();
     boss.display();
-
     boss.move();
     player.update();
     player.handleCollision(platforms);
@@ -73,7 +73,7 @@ class Game {
       }
       p.display(camX, platformImage);
     }
-    
+
     //Mostrar Portal
     image(portalImage, 8850 - camX, 278, portalImage.width, portalImage.height);
 
@@ -83,15 +83,9 @@ class Game {
     // Dibujar al jugador
     player.display();
     for (Enemy enemy : enemies) {
-      enemy.update(camX,platforms);
+      enemy.update(camX, platforms);
       enemy.display(camX);
-      
-
-      
     }
-    
- 
-
     // Mostrar información adicional (por ejemplo, vidas)
     fill(255);
     textSize(30);
