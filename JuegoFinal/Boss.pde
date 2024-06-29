@@ -17,7 +17,7 @@ class Boss extends GameObject {
   private ArrayList<Platform> platforms;
 
 
-  public Boss(float x, float y, ArrayList<Enemy> enemies1,ArrayList<Platform> platforms) {
+  public Boss(float x, float y, ArrayList<Enemy> enemies1, ArrayList<Platform> platforms) {
     this.position = new PVector(x, y);
     this.timer = 0;
     this.lastLaunchFrame = 0; // Inicializar el temporizador
@@ -36,7 +36,7 @@ class Boss extends GameObject {
   }
 
   public void display(float camX) {
-    verificarColisiones(camX);
+
     image(imagen, this.position.x, this.position.y);
     for (Pelota pelota : pelotas) {
       pelota.display();
@@ -44,7 +44,14 @@ class Boss extends GameObject {
     actualizarPelotas(); // Actualizar posiciones de las pelotas
     if (frameCount > startLaunchFrame) { // Determina si pasaron tantos frames
       lanzarEggs(); // Lanza los huevos
-      eliminarEnemigosFueraDeLimite();
+    }
+    verificarColisiones(camX);
+    eliminarEnemigosFueraDeLimite();
+
+    for (int i = eggs.size() - 1; i >= 0; i--) {
+      Egg egg = eggs.get(i);
+      egg.mover();
+      egg.display();
     }
   }
 
@@ -86,17 +93,6 @@ class Boss extends GameObject {
       eggs.add(new Egg(new PVector(this.position.x, this.position.y + anguloLanzamiento), velocidad2));
       lastLaunchFrame = frameCount; // Reiniciar el contador de frames
     }
-    for (int i = eggs.size() - 1; i >= 0; i--) {
-      Egg egg = eggs.get(i);
-      egg.mover();
-      egg.handleCollision(platforms); // Verifica colisiones con plataformas
-      egg.display();
-
-      // Verificar si el huevo ha dejado de caer y no está sobre una plataforma
-      if (!egg.isFalling && !egg.isOnPlatform()) {
-        eggs.remove(i); // Remover huevo de la lista
-      }
-    }
   }
 
   private void teleport() {
@@ -127,20 +123,22 @@ class Boss extends GameObject {
   private void verificarColisiones(float camX) {
     for (int i = eggs.size() - 1; i >= 0; i--) {
       Egg egg = eggs.get(i);
-      if (!egg.isFalling) { // Verificar si el huevo ha dejado de caer (ha colisionado con una plataforma)
-        if (enemies1.size() < maxEnemies && egg.isOnPlatform()) { // Verificar si el huevo está sobre una plataforma
+      egg.handleCollision(platforms,camX);
+
+      if (!egg.isFalling) {
+        if (egg.isOnPlatform() && enemies1.size() < maxEnemies) {
           boolean enemyExists = false;
           for (Enemy enemy : enemies1) {
-            if (dist(enemy.position.x, enemy.position.y, egg.posicion.x, egg.posicion.y) < 1) {
+            if (dist(enemy.position.x, enemy.position.y, egg.getPosicion().x + camX, egg.getPosicion().y) < 1) {
               enemyExists = true;
               break;
             }
           }
           if (!enemyExists) {
-            enemies1.add(new Enemy(egg.posicion.x + camX, egg.posicion.y, random(3, 5))); // Crear enemigo en la posición exacta del huevo
+            enemies1.add(new Enemy(egg.posicion.x + camX, egg.getPosicion().y, random(3, 5)));
           }
         }
-        eggs.remove(i); // Remover huevo de la lista
+        eggs.remove(i);
       }
     }
   }

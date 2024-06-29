@@ -2,6 +2,7 @@ class Game {
   private Player player;
   private Rays rays;
   private Boss boss;
+  private ArrayList<Egg> eggs = new ArrayList<>();
   private ArrayList<Platform> platforms = new ArrayList<>();
   private ArrayList<Enemy> enemies = new ArrayList<>();
   private PImage platformImage, portalImage;
@@ -15,9 +16,10 @@ class Game {
     this.groundLevel = height/2.23;
     this.player = new Player(0, 0, groundLevel);
     this.rays = new Rays();
-    this.boss = new Boss(-width, -height/4, enemies,platforms);
+    this.boss = new Boss(-width, -height/4, enemies, platforms);
     this.platformImage = loadImage("Images/Ground_11.png");
     this.portalImage = loadImage("Images/portal.png");
+    
 
 
     bgImage = loadImage("Images/levels/background.png"); // Carga tu imagen de fondo aquí
