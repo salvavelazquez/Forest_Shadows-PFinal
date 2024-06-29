@@ -74,16 +74,15 @@ class Boss extends GameObject {
 
   private void lanzarEggs() {
     if (pelotas.size() > 0 && (frameCount - lastLaunchFrame) > 120 &&  enemies1.size() < maxEnemies) { // Lanza un huevo cada segundo si hay pelotas disponibles
-      Pelota pelota1 = pelotas.size() > 0 ? pelotas.remove(0) : null; // Remueve la primera pelota del ArrayList si existe
-      Pelota pelota2 = pelotas.size() > 0 ? pelotas.remove(0) : null; // Remueve la segunda pelota del ArrayList si existe
+      Pelota pelota = pelotas.size() > 0 ? pelotas.remove(0) : null; // Remueve la primera pelota del ArrayList si existe
       float velocidadInicial = random(-2, -4);
-      for (int i = 0; i < 2; i++) {
-        float anguloLanzamiento = a * pow(i, 2) + b * i + c;
+       
+        float anguloLanzamiento = a * pow(0, 2) + b * 0 + c;
         PVector velocidad1 = new PVector(velocidadInicial, velocidadInicial);
         PVector velocidad2 = new PVector(-velocidadInicial, velocidadInicial);
-        eggs.add(new Egg(new PVector(this.position.x + i, this.position.y + anguloLanzamiento), velocidad1));
-        eggs.add(new Egg(new PVector(this.position.x + i, this.position.y + anguloLanzamiento), velocidad2));
-      }
+        eggs.add(new Egg(new PVector(this.position.x , this.position.y + anguloLanzamiento), velocidad1));
+        eggs.add(new Egg(new PVector(this.position.x , this.position.y + anguloLanzamiento), velocidad2));
+      
       lastLaunchFrame = frameCount; // Reiniciar el contador de frames
     }
     for (Egg egg : eggs) {
@@ -109,17 +108,26 @@ class Boss extends GameObject {
   }
 
   private void verificarColisiones() {
-    // Usar un bucle for para recorrer la lista y remover los elementos fuera de la pantalla
+  // bucle para recorrer la lista y remover los elementos fuera de la pantalla
     for (int i = eggs.size() - 1; i >= 0; i--) {
-      Egg egg = eggs.get(i);
+        Egg egg = eggs.get(i);
 
-      if (egg.posicion.y > 300) { // Asegurarse de que los huevos caigan fuera de la pantalla
-        if (enemies1.size() < maxEnemies) {
-          enemies1.add(new Enemy(egg.posicion.x, 300, random(1, 5), true));
-          //maxEnemies++;
+        if (egg.posicion.y > 300) { // Asegurarse de que los huevos caigan fuera de la pantalla
+            if (enemies1.size() < maxEnemies) {
+                boolean enemyExists = false;
+                for (Enemy enemy : enemies1) {
+                    if (dist(enemy.position.x, enemy.position.y, egg.posicion.x, 300) < 1) {
+                        enemyExists = true;
+                        break;
+                    }
+                }
+                if (!enemyExists) {
+                    enemies1.add(new Enemy(egg.posicion.x, 300, random(1, 5), true));
+                }
+            }
+            eggs.remove(i);
         }
-        eggs.remove(i);
-      }
     }
-  }
+}
+
 }
