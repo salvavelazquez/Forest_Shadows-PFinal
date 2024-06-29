@@ -43,16 +43,10 @@ class Boss extends GameObject {
     }
     actualizarPelotas(); // Actualizar posiciones de las pelotas
     if (frameCount > startLaunchFrame) { // Determina si pasaron tantos frames
-      lanzarEggs(); // Lanza los huevos
+      lanzarEggs(camX); // Lanza los huevos
     }
     verificarColisiones(camX);
     eliminarEnemigosFueraDeLimite();
-
-    for (int i = eggs.size() - 1; i >= 0; i--) {
-      Egg egg = eggs.get(i);
-      egg.mover();
-      egg.display();
-    }
   }
 
 
@@ -83,7 +77,7 @@ class Boss extends GameObject {
     }
   }
 
-  private void lanzarEggs() {
+  private void lanzarEggs(float camX) {
     if ((frameCount - lastLaunchFrame) > 120 &&  enemies1.size() < maxEnemies) { // Lanza un huevo cada segundo si hay pelotas disponibles
       float velocidadInicial = random(-2, -4);
       float anguloLanzamiento = a * pow(0, 2) + b * 0 + c;
@@ -92,6 +86,13 @@ class Boss extends GameObject {
       eggs.add(new Egg(new PVector(this.position.x, this.position.y + anguloLanzamiento), velocidad1));
       eggs.add(new Egg(new PVector(this.position.x, this.position.y + anguloLanzamiento), velocidad2));
       lastLaunchFrame = frameCount; // Reiniciar el contador de frames
+    }
+
+    for (int i = eggs.size() - 1; i >= 0; i--) {
+      Egg egg = eggs.get(i);
+      egg.mover();
+      egg.handleCollision(platforms, camX);
+      egg.display();
     }
   }
 
@@ -123,10 +124,10 @@ class Boss extends GameObject {
   private void verificarColisiones(float camX) {
     for (int i = eggs.size() - 1; i >= 0; i--) {
       Egg egg = eggs.get(i);
-      egg.handleCollision(platforms,camX);
 
-      if (!egg.isFalling) {
-        if (egg.isOnPlatform() && enemies1.size() < maxEnemies) {
+
+      if (!egg.isFalling && egg.isOnPlatform()) {
+        if (enemies1.size() < maxEnemies) {
           boolean enemyExists = false;
           for (Enemy enemy : enemies1) {
             if (dist(enemy.position.x, enemy.position.y, egg.getPosicion().x + camX, egg.getPosicion().y) < 1) {
@@ -135,7 +136,7 @@ class Boss extends GameObject {
             }
           }
           if (!enemyExists) {
-            enemies1.add(new Enemy(egg.posicion.x + camX, egg.getPosicion().y, random(3, 5)));
+            enemies1.add(new Enemy(egg.posicion.x + camX, egg.getPosicion().y-50, random(3, 5)));
           }
         }
         eggs.remove(i);

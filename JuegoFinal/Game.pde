@@ -9,7 +9,7 @@ class Game {
   private float camX = -width/2;
   private float groundLevel;
 
-  PImage bgImage;
+  private PImage bgImage;
   //private SoundFile ambientSound, lightningSound;
 
   public Game() {

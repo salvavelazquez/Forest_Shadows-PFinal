@@ -13,8 +13,10 @@ class Egg {
   }
 
   public void mover() {
-    velocidad.add(gravedad);
-    posicion.add(velocidad);
+    if (isFalling) {
+      velocidad.add(gravedad);
+      posicion.add(velocidad);
+    }
   }
 
   public void display() {
@@ -32,6 +34,7 @@ class Egg {
   }
 
   public void handleCollision(ArrayList<Platform> platforms, float camX) {
+    platforms.sort((p1, p2) -> Float.compare(p1.x, p2.x));
     for (Platform p : platforms) {
       if (isInSweepRange(this.posicion, p, camX)) {
         PVector nextPosition = PVector.add(this.posicion, this.velocidad);
