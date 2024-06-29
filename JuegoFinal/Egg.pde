@@ -2,22 +2,15 @@ class Egg {
   private PVector posicion;
   private PVector velocidad;
   private PVector gravedad = new PVector(0, 0.1);
-<<<<<<< Updated upstream
-  private boolean enemyCreated; // Nueva bandera
-=======
   private boolean isFalling;
   private boolean onPlatform; //
->>>>>>> Stashed changes
 
   public Egg(PVector posicion, PVector velocidad) {
     this.posicion = posicion;
     this.velocidad = velocidad;
-<<<<<<< Updated upstream
-    this.enemyCreated = false; // Inicializar como falso
-=======
     this.isFalling = true;
     this.onPlatform = false;
->>>>>>> Stashed changes
+
   }
 
   public void mover() {
@@ -32,9 +25,7 @@ class Egg {
   public PVector getPosicion() {
     return posicion;
   }
-<<<<<<< Updated upstream
-=======
-  public boolean isOnPlatform() {
+    public boolean isOnPlatform() {
     return onPlatform;
   }
 
@@ -67,5 +58,5 @@ class Egg {
     }
     return false;
   }
->>>>>>> Stashed changes
+
 }
