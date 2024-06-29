@@ -37,8 +37,11 @@ class Menu {
     textSize(30);
     textAlign(LEFT);
     text("Instrucciones:\n" +
+         "\n"+
          "Usa las teclas A y D o la flecha izquierda y derecha para moverte.\n" +
+         "\n"+
          "Usa la tecla W o la flecha hacia arriba para saltar.\n" +
+         "\n"+
          "Presiona la barra espaciadora más una tecla de movimiento para \nactivar el poder de visión.", 230, 300);
     backButton.display();
     popMatrix();    
@@ -65,26 +68,26 @@ class Menu {
   
   public void mouseControladorMenu() {
     if (playButton.mouseEstaEncima()) {
-      estadoActual = 1;
+      estadoActual = StateMachine.PLAYING;
     } else if (instructionsButton.mouseEstaEncima()) {
-      estadoActual = 2;
+      estadoMenu = StateMachine.INSTRUCTING;
     }else if (developersButton.mouseEstaEncima()) {
-      estadoActual = 3;
+      estadoMenu = StateMachine.DEVS;;
       this.up = height; // Resetear
     } else if (backButton.mouseEstaEncima()) {
-      estadoActual = 0;
+      estadoMenu = StateMachine.MENU;
     }
   }
   
   public void mouseControladorInstrucciones() {
     if (backButton.mouseEstaEncima()) {
-      estadoActual = 0;
+      estadoMenu = StateMachine.MENU;
     }
   }
   
   public void mouseControladorDesarrolladores() {
     if (backButton.mouseEstaEncima()) {
-      estadoActual = 0;
+      estadoMenu = StateMachine.MENU;
     }
   }
 

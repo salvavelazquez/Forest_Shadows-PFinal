@@ -34,15 +34,13 @@ class Boss extends GameObject {
   }
 
   public void display() {
-    actualizarPelotas(); // Actualizar posiciones de las pelotas
-
-    if (frameCount > startLaunchFrame) { // Determina si pasaron tantos frames
-      lanzarEggs(); // Lanza los huevos
-    }
-    imageMode(CENTER);
     image(imagen, this.position.x, this.position.y);
     for (Pelota pelota : pelotas) {
       pelota.display();
+    }
+    actualizarPelotas(); // Actualizar posiciones de las pelotas
+    if (frameCount > startLaunchFrame) { // Determina si pasaron tantos frames
+      lanzarEggs(); // Lanza los huevos
     }
   }
 
@@ -51,7 +49,6 @@ class Boss extends GameObject {
     this.position.x += this.velocidad.x * Time.getDeltaTime(frameRate);
     this.position.y += 5 * cos(this.timer * 2.0);
     teleport();
-
     verificarColisiones();
   }
 
