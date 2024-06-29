@@ -56,6 +56,8 @@ class Enemy extends GameObject {
             if (!onPlatform) {
                 movingRight = !movingRight;
             }
+            
+            
         }
     }
     
