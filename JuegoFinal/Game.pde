@@ -29,7 +29,9 @@ class Game {
     platforms.add(new Platform(1600, groundLevel + 13, 300, 55));
     platforms.add(new Platform(2100, groundLevel + 13, 300, 55));
     platforms.add(new Platform(2950, groundLevel + 13, 1000, 55));
-    platforms.add(new Platform(7000, groundLevel + 13, 2000, 55));
+    platforms.add(new Platform(7000, groundLevel + 13, 850, 55));
+    platforms.add(new Platform(7850, groundLevel + 13, 850, 55));
+    platforms.add(new Platform(8700, groundLevel + 13, 300, 55));
 
     platforms.add(new Platform(1100, groundLevel - 94, 200, 50));
     platforms.add(new Platform(1300, groundLevel - 194, 150, 50));
@@ -47,12 +49,6 @@ class Game {
     platforms.add(new PlatformEnMovimiento(4950, groundLevel - 94, 150, 50, 0.03, false));
     platforms.add(new PlatformEnMovimiento(5400, groundLevel - 300, 150, 50, 0.03, true));
 
-    /**enimies
-    enemies.add(new Enemy(2460, groundLevel -200, random(3, 6), true));
-    enemies.add(new Enemy(3000, groundLevel -200, random(3, 6), true));
-    enemies.add(new Enemy(6450, groundLevel -300, random(3, 6), true));
-    enemies.add(new Enemy(7250, groundLevel -100, random(3, 6), true));*/
-    
   }
 
   public void display() {
@@ -83,7 +79,7 @@ class Game {
     // Dibujar al jugador
     player.display();
     for (Enemy enemy : enemies) {
-      enemy.update(camX, platforms);
+      enemy.update(platforms);
       enemy.display(camX);
     }
     // Mostrar información adicional (por ejemplo, vidas)

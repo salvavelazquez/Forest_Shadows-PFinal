@@ -75,11 +75,11 @@ class Player extends GameObject {
       text("Game Over", -100, 0);
       noLoop();
     }
-    
+
     // Verificar colisión con el castillo para ganar el juego
     if (position.x  >= 8850 && position.x <= 8950 &&
-        position.y + 90 >= 300 && position.y <= 290) {
-          gameOver();
+      position.y + 90 >= 300 && position.y <= 290) {
+      win();
     }
   }
 
@@ -89,15 +89,34 @@ class Player extends GameObject {
   }
 
   public void handleCollision(ArrayList<Platform> platforms) {
+    // Ordena las plataformas según su posición en el eje X
+    platforms.sort((p1, p2) -> Float.compare(p1.x, p2.x));
     for (Platform p : platforms) {
-      if (this.position.x + 70 > p.x && position.x - 20 < p.x + p.w) {
-        if (this.position.y + 90 > p.y && position.y + 90 < p.y + p.h) {
+      if (isInSweepRange(this.position, p)) {
+        PVector nextPosition = PVector.add(this.position, this.speed);
+        if (willCollide(this.position, nextPosition, p)) {
           this.position.y = p.y - 90;
           this.speed.y = 0;
           isJumping = false;
         }
       }
     }
+  }
+
+  private boolean isInSweepRange(PVector position, Platform platform) {
+    // Verifica si la plataforma está en el rango de barrido del jugador
+    float sweepRange = 900; // Definir un rango de barrido adecuado
+    return Math.abs(position.x - platform.x) <= sweepRange;
+  }
+
+  private boolean willCollide(PVector currentPos, PVector nextPos, Platform platform) {
+    // Barrido en el eje Y
+    if (currentPos.y < platform.y && nextPos.y + 90 >= platform.y) {
+      if (currentPos.x + 70 > platform.x && currentPos.x - 20 < platform.x + platform.w) {
+        return true;
+      }
+    }
+    return false;
   }
 
   void campoVision() {
@@ -183,11 +202,11 @@ class Player extends GameObject {
       spacePress=false;
     }
   }
-  public void gameOver(){
-      fill(255);
-      textSize(50);
-      textAlign(CENTER, CENTER);
-      text("Winner!", -50, 0);
-      noLoop();
+  public void win() {
+    fill(255);
+    textSize(50);
+    textAlign(CENTER, CENTER);
+    text("Winner!", -50, 0);
+    noLoop();
   }
 }
