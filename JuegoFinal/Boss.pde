@@ -33,7 +33,7 @@ class Boss extends GameObject {
     crearPelotas(); // Crear pelotas alrededor del Boss
   }
 
-  public void display() {
+  public void display(float camX) {
     image(imagen, this.position.x, this.position.y);
     for (Pelota pelota : pelotas) {
       pelota.display();
@@ -41,6 +41,7 @@ class Boss extends GameObject {
     actualizarPelotas(); // Actualizar posiciones de las pelotas
     if (frameCount > startLaunchFrame) { // Determina si pasaron tantos frames
       lanzarEggs(); // Lanza los huevos
+      verificarColisiones(camX);
     }
   }
 
@@ -49,7 +50,6 @@ class Boss extends GameObject {
     this.position.x += this.velocidad.x * Time.getDeltaTime(frameRate);
     this.position.y += 5 * cos(this.timer * 2.0);
     teleport();
-    verificarColisiones();
   }
 
   private void crearPelotas() {
@@ -73,16 +73,16 @@ class Boss extends GameObject {
   }
 
   private void lanzarEggs() {
-    if (pelotas.size() > 0 && (frameCount - lastLaunchFrame) > 120 &&  enemies1.size() < maxEnemies) { // Lanza un huevo cada segundo si hay pelotas disponibles
+    if ((frameCount - lastLaunchFrame) > 120 &&  enemies1.size() < maxEnemies) { // Lanza un huevo cada segundo si hay pelotas disponibles
       Pelota pelota = pelotas.size() > 0 ? pelotas.remove(0) : null; // Remueve la primera pelota del ArrayList si existe
       float velocidadInicial = random(-2, -4);
-       
-        float anguloLanzamiento = a * pow(0, 2) + b * 0 + c;
-        PVector velocidad1 = new PVector(velocidadInicial, velocidadInicial);
-        PVector velocidad2 = new PVector(-velocidadInicial, velocidadInicial);
-        eggs.add(new Egg(new PVector(this.position.x , this.position.y + anguloLanzamiento), velocidad1));
-        eggs.add(new Egg(new PVector(this.position.x , this.position.y + anguloLanzamiento), velocidad2));
-      
+
+      float anguloLanzamiento = a * pow(0, 2) + b * 0 + c;
+      PVector velocidad1 = new PVector(velocidadInicial, velocidadInicial);
+      PVector velocidad2 = new PVector(-velocidadInicial, velocidadInicial);
+      eggs.add(new Egg(new PVector(this.position.x, this.position.y + anguloLanzamiento), velocidad1));
+      eggs.add(new Egg(new PVector(this.position.x, this.position.y + anguloLanzamiento), velocidad2));
+ println("Eggs launched at: " + this.position.x + ", " + this.position.y);
       lastLaunchFrame = frameCount; // Reiniciar el contador de frames
     }
     for (Egg egg : eggs) {
@@ -107,27 +107,26 @@ class Boss extends GameObject {
     }
   }
 
-  private void verificarColisiones() {
-  // bucle para recorrer la lista y remover los elementos fuera de la pantalla
+  private void verificarColisiones(float camX) {
     for (int i = eggs.size() - 1; i >= 0; i--) {
-        Egg egg = eggs.get(i);
+      Egg egg = eggs.get(i);
 
-        if (egg.posicion.y > 300) { // Asegurarse de que los huevos caigan fuera de la pantalla
-            if (enemies1.size() < maxEnemies) {
-                boolean enemyExists = false;
-                for (Enemy enemy : enemies1) {
-                    if (dist(enemy.position.x, enemy.position.y, egg.posicion.x, 300) < 1) {
-                        enemyExists = true;
-                        break;
-                    }
-                }
-                if (!enemyExists) {
-                    enemies1.add(new Enemy(egg.posicion.x, 300, random(1, 5), true));
-                }
+      if (egg.posicion.y > 300) { // Verificar si el huevo toca el límite inferior
+        if (enemies1.size() < maxEnemies) {
+          boolean enemyExists = false;
+          for (Enemy enemy : enemies1) {
+            if (dist(enemy.position.x, enemy.position.y, egg.posicion.x, 300) < 1) {
+              enemyExists = true;
+              break;
             }
-            eggs.remove(i);
+          }
+          if (!enemyExists) {
+            enemies1.add(new Enemy(egg.posicion.x+camX, 300, random(1, 5), true)); // Crear enemigo en la posición exacta del huevo
+         println("Enemy created at: " + egg.posicion.x + ", 300");  
         }
+        }
+        eggs.remove(i); // Remover huevo de la lista
+      }
     }
-}
-
+  }
 }
