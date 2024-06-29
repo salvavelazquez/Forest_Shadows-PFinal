@@ -87,6 +87,7 @@ class Boss extends GameObject {
     for (Egg egg : eggs) {
       egg.mover();
       egg.display();
+<<<<<<< Updated upstream
     }
   }
 
@@ -111,16 +112,51 @@ class Boss extends GameObject {
       Enemy enemy = enemies1.get(i);
       if (enemy.position.y > 600) { // Verificar si el enemigo pasa el límite
         enemies1.remove(i); // Eliminar enemigo de la lista
+=======
+      // Verificar si el huevo ha dejado de caer y no está sobre una plataforma
+      if (!egg.isFalling && !egg.isOnPlatform()) {
+        eggs.remove(i); // Remover huevo de la lista
+>>>>>>> Stashed changes
       }
     }
   }
 
 
+private void teleport() {
+  if (this.position.x < -width) {
+    this.position.x = -width / 2;
+    maxEnemies = 7; // Reiniciar el límite de enemigos al teletransportarse
+  } else if (this.position.x > 900) {
+    crearPelotas();
+    this.position.x = -width / 2;
+    maxEnemies = 7; // Reiniciar el límite de enemigos al teletransportarse
+  }
+  if (this.position.y < -width) {
+    this.position.y = height;
+  } else if (this.position.y > width) {
+    this.position.y = 0;
+  }
+}
+
+private void eliminarEnemigosFueraDeLimite() {
+  for (int i = enemies1.size() - 1; i >= 0; i--) {
+    Enemy enemy = enemies1.get(i);
+    if (enemy.position.y > 600) { // Verificar si el enemigo pasa el límite
+      enemies1.remove(i); // Eliminar enemigo de la lista
+    }
+  }
+}
+
   private void verificarColisiones(float camX) {
     for (int i = eggs.size() - 1; i >= 0; i--) {
       Egg egg = eggs.get(i);
+<<<<<<< Updated upstream
       if (egg.posicion.y > 300) { // Verificar si el huevo toca el límite inferior
         if (enemies1.size() < maxEnemies) {
+=======
+      if (!egg.isFalling) { // Verificar si el huevo ha dejado de caer (ha colisionado con una plataforma)
+        if (enemies1.size() < maxEnemies && egg.isOnPlatform()) { // Verificar si el huevo está sobre una plataforma
+>>>>>>> Stashed changes
           boolean enemyExists = false;
           for (Enemy enemy : enemies1) {
             if (dist(enemy.position.x, enemy.position.y, egg.posicion.x, 300) < 1) {
@@ -129,7 +165,11 @@ class Boss extends GameObject {
             }
           }
           if (!enemyExists) {
+<<<<<<< Updated upstream
             enemies1.add(new Enemy(egg.posicion.x+camX, 300, random(3, 5))); // Crear enemigo en la posición exacta del huevo
+=======
+            enemies1.add(new Enemy(egg.posicion.x + camX, egg.posicion.y, random(3, 5))); // Crear enemigo en la posición exacta del huevo
+>>>>>>> Stashed changes
           }
         }
         eggs.remove(i); // Remover huevo de la lista
