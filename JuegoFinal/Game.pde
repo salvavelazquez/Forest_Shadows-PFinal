@@ -58,7 +58,7 @@ class Game {
   public void display() {
     background(0);
     rays.display();
-    boss.display();
+    boss.display(camX);
     boss.move();
     player.update();
     player.handleCollision(platforms);
