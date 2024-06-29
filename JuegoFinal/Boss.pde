@@ -44,6 +44,7 @@ class Boss extends GameObject {
       verificarColisiones(camX);
       eliminarEnemigosFueraDeLimite();
       }
+    }
   }
 
   public void move() {
@@ -114,6 +115,7 @@ class Boss extends GameObject {
     }
   }
 
+
   private void verificarColisiones(float camX) {
     for (int i = eggs.size() - 1; i >= 0; i--) {
       Egg egg = eggs.get(i);
@@ -131,6 +133,17 @@ class Boss extends GameObject {
           }
         }
         eggs.remove(i); // Remover huevo de la lista
+      }
+    }
+  }
+
+
+
+  private void eliminarEnemigosFueraDeLimite() {
+    for (int i = enemies1.size() - 1; i >= 0; i--) {
+      Enemy enemy = enemies1.get(i);
+      if (enemy.position.y > 300) { // Verificar si el enemigo pasa el límite
+        enemies1.remove(i); // Eliminar enemigo de la lista
       }
     }
   }
