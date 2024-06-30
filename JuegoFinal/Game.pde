@@ -3,9 +3,8 @@ class Game {
   private Rays rays;
   private Rain[] rain;
   private Boss boss;
-  private ArrayList<Egg> eggs = new ArrayList<>();
   private ArrayList<Platform> platforms = new ArrayList<>();
-  private ArrayList<Enemy> enemies = new ArrayList<>();
+  private ArrayList<Enemy> inactiveEnemies = new ArrayList<>();
   private PImage platformImage, portalImage;
   private float camX = -width/2;
   private float groundLevel;
@@ -18,7 +17,7 @@ class Game {
     this.player = new Player(0, 0, groundLevel);
     this.rays = new Rays();
     this.rain = new Rain[100];
-    this.boss = new Boss(-width, -height/4, enemies, platforms);
+    this.boss = new Boss(-width, -height/4, platforms,this);
     this.platformImage = loadImage("Images/Ground_11.png");
     this.portalImage = loadImage("Images/portal.png");
     
@@ -58,6 +57,12 @@ class Game {
     platforms.add(new PlatformEnMovimiento(4450, groundLevel - 94, 150, 50, 0.03, false));
     platforms.add(new PlatformEnMovimiento(4950, groundLevel - 94, 150, 50, 0.03, false));
     platforms.add(new PlatformEnMovimiento(5400, groundLevel - 300, 150, 50, 0.03, true));
+  
+    // Crear enemigos inactivos
+    for (int i = 0; i < 7; i++) {
+         Enemy enemy = new Enemy(0, 0, 100, player);
+         inactiveEnemies.add(enemy);
+    }
   }
 
   public void display() {
@@ -89,11 +94,11 @@ class Game {
     image(portalImage, 8850 - camX, 278, portalImage.width, portalImage.height);
 
     // Eliminar enemigos en el campo de visión del jugador
-    player.killEnemiesInView(enemies);
+    player.killEnemiesInView(inactiveEnemies);
 
     // Dibujar al jugador
     player.display();
-    for (Enemy enemy : enemies) {
+    for (Enemy enemy : inactiveEnemies) {
       enemy.update(platforms);
       enemy.display(camX);
     }
@@ -127,5 +132,14 @@ class Game {
 
   public ArrayList<Platform> getPlatforms() {
     return platforms;
+  }
+  
+  public void activateEnemy(float x, float y) {
+        for (Enemy enemy : inactiveEnemies) {
+            if(enemy.position.x == 0){
+                enemy.activate(x, y);
+                break;
+            }
+        }
   }
 }
