@@ -1,6 +1,7 @@
 class Game {
   private Player player;
   private Rays rays;
+  private Rain[] rain;
   private Boss boss;
   private ArrayList<Egg> eggs = new ArrayList<>();
   private ArrayList<Platform> platforms = new ArrayList<>();
@@ -9,21 +10,23 @@ class Game {
   private float camX = -width/2;
   private float groundLevel;
 
-  private PImage bgImage;
+  //private PImage bgImage;
   //private SoundFile ambientSound, lightningSound;
 
   public Game() {
     this.groundLevel = height/2.23;
     this.player = new Player(0, 0, groundLevel);
     this.rays = new Rays();
+    this.rain = new Rain[100];
     this.boss = new Boss(-width, -height/4, enemies, platforms);
     this.platformImage = loadImage("Images/Ground_11.png");
     this.portalImage = loadImage("Images/portal.png");
     
-
-
-    bgImage = loadImage("Images/levels/background.png"); // Carga tu imagen de fondo aquí
-    bgImage.resize(width, height);
+    for (int i = 0; i < rain.length; i++) {
+      rain[i] = new Rain();
+    }
+    //bgImage = loadImage("Images/levels/background.png"); // Carga tu imagen de fondo aquí
+    //bgImage.resize(width, height);
     //Sound
     /**this.ambientSound = new SoundFile(p, "Sound/ambientSound.mp3");
      this.lightningSound = new SoundFile(p, "Sound/lightningSound.mp3");
@@ -59,9 +62,12 @@ class Game {
 
   public void display() {
     background(0);
-
+    for (int i = 0; i < rain.length; i++) {
+      rain[i].show();
+      rain[i].fall();
+    }
     // Dibuja el fondo
-    drawBackground();
+    //drawBackground();
     rays.display();
     boss.display(camX);
     boss.move();
@@ -97,13 +103,13 @@ class Game {
     text("Vidas: " + player.lives, -width * 0.4, -height * 0.4);
   }
 
-  void drawBackground() {
-    int bgWidth = bgImage.width;
-    int bgHeight = 0;
-    for (int i = -1; i <= width / bgWidth + 1; i++) {
-      image(bgImage, i * bgWidth - camX % bgWidth, bgHeight);
-    }
-  }
+  /**void drawBackground() {
+   int bgWidth = bgImage.width;
+   int bgHeight = 0;
+   for (int i = -1; i <= width / bgWidth + 1; i++) {
+   image(bgImage, i * bgWidth - camX % bgWidth, bgHeight);
+   }
+   }*/
 
 
 
