@@ -13,11 +13,13 @@ class Boss extends GameObject {
   private float b = 0; // Parábola
   private float c = 0; // Parábola
   private int maxEnemies = 7; // Máximo número de enemigos permitidos
-  private ArrayList<Enemy> enemies1; // Declarar la lista de enemigos
+  //private ArrayList<Enemy> enemies1; // Declarar la lista de enemigos
   private ArrayList<Platform> platforms;
+  private Game game;
+  private PVector position;
 
 
-  public Boss(float x, float y, ArrayList<Enemy> enemies1, ArrayList<Platform> platforms) {
+  public Boss(float x, float y, ArrayList<Platform> platforms, Game game) {
     this.position = new PVector(x, y);
     this.timer = 0;
     this.lastLaunchFrame = 0; // Inicializar el temporizador
@@ -30,9 +32,9 @@ class Boss extends GameObject {
     this.eggs = new ArrayList<Egg>();
     this.imagen = loadImage("Images/boss.png");
     this.imagen.resize(150, 150);
-    this.enemies1 = enemies1;
     this.platforms = platforms;
     crearPelotas(); // Crear pelotas alrededor del Boss
+    this.game = game; // Establecer referencia al juego
   }
 
   public void display(float camX) {
@@ -46,7 +48,6 @@ class Boss extends GameObject {
       lanzarEggs(camX); // Lanza los huevos
     }
     verificarColisiones(camX);
-    eliminarEnemigosFueraDeLimite();
   }
 
 
@@ -78,7 +79,7 @@ class Boss extends GameObject {
   }
 
   private void lanzarEggs(float camX) {
-    if ((frameCount - lastLaunchFrame) > 120 &&  enemies1.size() < maxEnemies) { // Lanza un huevo cada segundo si hay pelotas disponibles
+    if ((frameCount - lastLaunchFrame) > 120) { // Lanza un huevo cada segundo si hay pelotas disponibles
       float velocidadInicial = random(-2, -4);
       float anguloLanzamiento = a * pow(0, 2) + b * 0 + c;
       PVector velocidad1 = new PVector(velocidadInicial, velocidadInicial);
@@ -112,34 +113,13 @@ class Boss extends GameObject {
     }
   }
 
-  private void eliminarEnemigosFueraDeLimite() {
-    for (int i = enemies1.size() - 1; i >= 0; i--) {
-      Enemy enemy = enemies1.get(i);
-      if (enemy.position.y > 600) { // Verificar si el enemigo pasa el límite
-        enemies1.remove(i); // Eliminar enemigo de la lista
-      }
-    }
-  }
-
   private void verificarColisiones(float camX) {
     for (int i = eggs.size() - 1; i >= 0; i--) {
       Egg egg = eggs.get(i);
 
-
       if (!egg.isFalling && egg.isOnPlatform()) {
-        if (enemies1.size() < maxEnemies) {
-          boolean enemyExists = false;
-          for (Enemy enemy : enemies1) {
-            if (dist(enemy.position.x, enemy.position.y, egg.getPosicion().x + camX, egg.getPosicion().y) < 1) {
-              enemyExists = true;
-              break;
-            }
-          }
-          if (!enemyExists) {
-            enemies1.add(new Enemy(egg.posicion.x + camX, egg.getPosicion().y-50, random(3, 5)));
-          }
-        }
-        eggs.remove(i);
+            game.activateEnemy(egg.posicion.x+camX, egg.getPosicion().y-50);
+            eggs.remove(i);
       }
     }
   }
