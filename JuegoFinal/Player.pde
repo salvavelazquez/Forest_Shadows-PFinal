@@ -72,7 +72,7 @@ class Player extends GameObject {
     if (lives==0) {
       fill(255);
       textSize(50);
-      text("Game Over", -100, 0);
+      text("Game Over", -90, 0);
       noLoop();
     }
 
@@ -160,7 +160,8 @@ class Player extends GameObject {
         if ((distance < fovRadius && spacePress) ) {
           float angleToEnemy = PVector.angleBetween(direction, toEnemy);
           if (abs(angleToEnemy) < anguloVision) {
-            enemies.remove(i); // Elimina el enemigo del ArrayList
+            enemy.deactivate();
+            //enemies.remove(i); // Elimina el enemigo del ArrayList
           }
         }
       }
