@@ -1,22 +1,32 @@
 class Game {
   private Player player;
   private Rays rays;
+  private Rain[] rain;
   private Boss boss;
+  private ArrayList<Egg> eggs = new ArrayList<>();
   private ArrayList<Platform> platforms = new ArrayList<>();
   private ArrayList<Enemy> enemies = new ArrayList<>();
   private PImage platformImage, portalImage;
   private float camX = -width/2;
   private float groundLevel;
+
+  //private PImage bgImage;
   //private SoundFile ambientSound, lightningSound;
 
   public Game() {
     this.groundLevel = height/2.23;
     this.player = new Player(0, 0, groundLevel);
     this.rays = new Rays();
-    this.boss = new Boss(-width, -height/4, enemies);
+    this.rain = new Rain[100];
+    this.boss = new Boss(-width, -height/4, enemies, platforms);
     this.platformImage = loadImage("Images/Ground_11.png");
     this.portalImage = loadImage("Images/portal.png");
-
+    
+    for (int i = 0; i < rain.length; i++) {
+      rain[i] = new Rain();
+    }
+    //bgImage = loadImage("Images/levels/background.png"); // Carga tu imagen de fondo aquí
+    //bgImage.resize(width, height);
     //Sound
     /**this.ambientSound = new SoundFile(p, "Sound/ambientSound.mp3");
      this.lightningSound = new SoundFile(p, "Sound/lightningSound.mp3");
@@ -48,11 +58,16 @@ class Game {
     platforms.add(new PlatformEnMovimiento(4450, groundLevel - 94, 150, 50, 0.03, false));
     platforms.add(new PlatformEnMovimiento(4950, groundLevel - 94, 150, 50, 0.03, false));
     platforms.add(new PlatformEnMovimiento(5400, groundLevel - 300, 150, 50, 0.03, true));
-
   }
 
   public void display() {
     background(0);
+    for (int i = 0; i < rain.length; i++) {
+      rain[i].show();
+      rain[i].fall();
+    }
+    // Dibuja el fondo
+    //drawBackground();
     rays.display();
     boss.display(camX);
     boss.move();
@@ -87,6 +102,16 @@ class Game {
     textSize(30);
     text("Vidas: " + player.lives, -width * 0.4, -height * 0.4);
   }
+
+  /**void drawBackground() {
+   int bgWidth = bgImage.width;
+   int bgHeight = 0;
+   for (int i = -1; i <= width / bgWidth + 1; i++) {
+   image(bgImage, i * bgWidth - camX % bgWidth, bgHeight);
+   }
+   }*/
+
+
 
   void mouseControladorGame() {
     // Controlador de mouse

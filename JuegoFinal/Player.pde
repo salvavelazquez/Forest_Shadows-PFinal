@@ -112,7 +112,7 @@ class Player extends GameObject {
   private boolean willCollide(PVector currentPos, PVector nextPos, Platform platform) {
     // Barrido en el eje Y
     if (currentPos.y < platform.y && nextPos.y + 90 >= platform.y) {
-      if (currentPos.x + 70 > platform.x && currentPos.x - 20 < platform.x + platform.w) {
+      if (currentPos.x > platform.x-30 && currentPos.x < platform.x + platform.w+40) {
         return true;
       }
     }

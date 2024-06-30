@@ -1,8 +1,12 @@
 class Rays {
   private int flashDuration;
+  private color rayColor;
+  private int raySize;
 
   public Rays() {
     this.flashDuration = 0;
+    this.rayColor = color(255, 255, 0);
+    this.raySize = 2;
   }
 
   public void display() {
@@ -14,8 +18,8 @@ class Rays {
 
     if (random(1) < 0.03) { // 3% de probabilidad de rayo en cada cuadro
       flashDuration = 5; // Duración del flash en cuadros
-      stroke(255, 255, 0);
-      strokeWeight(2);
+      stroke(rayColor);
+      strokeWeight(raySize);
       float startX = random(-width/2, width/2);
       float startY = -height/2;
       // Se dibuja los detellos de rayos y se establece sus ubicaciones desde x a y
@@ -26,6 +30,7 @@ class Rays {
         startX = endX;
         startY = endY;
       }
+      noStroke();
     }
   }
 }
