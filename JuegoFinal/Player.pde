@@ -22,7 +22,7 @@ class Player extends GameObject {
     this.speed = new PVector(0, 0);
     this.spritePlayer = new SpritePlayer();
     this.statePlayer = PlayerStateMachine.IDLE;
-    this.lives = 4;
+    this.lives = 5;
     this.movingLeft = false;
     this.movingRight = false;
     this.spacePress=false;
@@ -102,6 +102,26 @@ class Player extends GameObject {
       }
     }
   }
+
+  public void handleEnemyCollision(ArrayList<Enemy> enemies) {
+    if (enemies == null || enemies.isEmpty()) {
+      return;
+    }
+    for (Enemy enemy : enemies) {
+      if (willCollideWithEnemy(this.position, enemy)) {
+        lives--;
+        resetPos();
+        break;
+      }
+    }
+  }
+
+  private boolean willCollideWithEnemy(PVector playerPos, Enemy enemy) {
+    // Verificar colisión con enemigo
+    float collisionRange = 50; // Ajustar según sea necesario
+    return PVector.dist(playerPos, enemy.position) < collisionRange;
+  }
+
 
   private boolean isInSweepRange(PVector position, Platform platform) {
     // Verifica si la plataforma está en el rango de barrido del jugador
