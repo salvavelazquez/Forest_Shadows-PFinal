@@ -23,6 +23,12 @@ class Player extends GameObject {
   // Inicializar los vectores
   Vector vectorPersonaje;
   Vector vectorPersonajeEnemigo;
+  
+  //Variables del Powerup
+  private int powerUpCount = 0;
+  private boolean powerUpActive = false;
+  private float powerUpTimer = 0;
+  private static final float POWER_UP_DURATION = 2.0;
 
 
   public Player(float x, float y, float groundLevel ) {
@@ -55,10 +61,18 @@ class Player extends GameObject {
       statePlayer = PlayerStateMachine.IDLE;
     }
 
-
-    if (spacePress) {
-      campoVision();
-    }
+    // Actualizar el temporizador del power-up
+    if (powerUpActive) {
+       powerUpTimer += Time.getDeltaTime(frameRate);
+       if (powerUpTimer >= POWER_UP_DURATION) {
+            powerUpActive = false;
+            powerUpTimer = 0;
+            spacePress = false; // Apaga el efecto del power-up
+        }
+     }
+     if (spacePress) {
+         campoVision();
+     }
 
     // Limitar el movimiento del jugador a la izquierda
     this.camX = max(this.position.x, 0);
@@ -99,6 +113,10 @@ class Player extends GameObject {
   public void display() {
     this.camX = max(this.position.x, 0);
     spritePlayer.renderPlayer(this.statePlayer, this.position, this.camX);
+  }
+  
+  public void addPowerUp() {
+    this.powerUpCount++;
   }
 
   public void handleCollision(ArrayList<Platform> platforms) {
@@ -224,7 +242,13 @@ class Player extends GameObject {
     } else if (key == 'w' ||key == 'W' || keyCode == UP) {
       jump();
     } else if (keyCode==32) {
-      spacePress=true;
+      if (powerUpCount > 0 && !powerUpActive) {
+            spacePress = true;
+            powerUpActive = true;
+            powerUpTimer = 0;
+            this.powerUpCount--;
+            println(this.powerUpCount);
+      }
     }
   }
 
@@ -234,7 +258,7 @@ class Player extends GameObject {
     } else if (key == 'a' || key == 'A' || keyCode == LEFT) {
       movingLeft = false;
     } else if (keyCode==32) {
-      spacePress=false;
+      //spacePress=false;
     }
   }
   public void win() {
