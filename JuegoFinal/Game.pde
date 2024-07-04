@@ -5,7 +5,8 @@ class Game {
   private Boss boss;
   private ArrayList<Platform> platforms = new ArrayList<>();
   private ArrayList<Enemy> inactiveEnemies = new ArrayList<>();
-  private PImage platformImage, portalImage;
+  private ArrayList<PowerUp> powerUps = new ArrayList<>();
+  private PImage platformImage, portalImage, powerUpImage;
   private float camX = -width/2;
   private float groundLevel;
 
@@ -20,6 +21,7 @@ class Game {
     this.boss = new Boss(-width, -height/4, platforms, this);
     this.platformImage = loadImage("Images/Ground_11.png");
     this.portalImage = loadImage("Images/portal.png");
+    this.powerUpImage = loadImage("Images/powerup.png");
 
     for (int i = 0; i < rain.length; i++) {
       rain[i] = new Rain();
@@ -57,6 +59,11 @@ class Game {
     platforms.add(new PlatformEnMovimiento(4450, groundLevel - 94, 150, 50, 0.03, false));
     platforms.add(new PlatformEnMovimiento(4950, groundLevel - 94, 150, 50, 0.03, false));
     platforms.add(new PlatformEnMovimiento(5400, groundLevel - 300, 150, 50, 0.03, true));
+    
+    //power-ups
+    powerUps.add(new PowerUp(450, groundLevel - 50, powerUpImage));
+    powerUps.add(new PowerUp(1600, groundLevel - 50, powerUpImage));
+    powerUps.add(new PowerUp(2450, groundLevel - 134, powerUpImage));
 
     // Crear enemigos inactivos
     for (int i = 0; i < 7; i++) {
@@ -90,6 +97,11 @@ class Game {
       }
       p.display(camX, platformImage);
     }
+    
+    // Dibujar power-ups
+    for (PowerUp powerUp : powerUps) {
+      powerUp.display(camX);
+    }
 
     //Mostrar Portal
     image(portalImage, 8850 - camX, 278, portalImage.width, portalImage.height);
@@ -109,6 +121,10 @@ class Game {
     fill(255);
     textSize(30);
     text("Vidas: " + player.lives, -width * 0.4, -height * 0.4);
+    
+    // Detectar colisiones con power-ups
+    colisionPowerUps();
+    text("PowerUp: " + player.powerUpCount, -width * 0.39, -height * 0.45);
   }
 
   /**void drawBackground() {
@@ -153,5 +169,16 @@ class Game {
       }
     }
     return activeEnemies;
+  }
+  
+  private void colisionPowerUps() {
+    for (int i = powerUps.size() - 1; i >= 0; i--) {
+      PowerUp powerUp = powerUps.get(i);
+      if (player.position.dist(powerUp.position) < 50) {
+        powerUps.remove(i);
+        player.addPowerUp();
+        
+      }
+    }
   }
 }
