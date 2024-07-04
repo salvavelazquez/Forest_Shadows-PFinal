@@ -13,7 +13,7 @@ class Player extends GameObject {
   private boolean movingLeft;
   private boolean movingRight;
   private boolean spacePress;
-  
+
   // Inicializar los vectores
   Vector vectorPersonaje;
   Vector vectorPersonajeEnemigo;
@@ -72,11 +72,8 @@ class Player extends GameObject {
     }
 
     //Detiene el juego al peder las vidas
-    if (lives==0) {
-      fill(255);
-      textSize(50);
-      text("Game Over", -90, 0);
-      noLoop();
+    if (lives<=0) {
+      gameOver();
     }
 
     // Verificar colisión con el castillo para ganar el juego
@@ -227,6 +224,12 @@ class Player extends GameObject {
     textSize(50);
     textAlign(CENTER, CENTER);
     text("Winner!", -50, 0);
+    noLoop();
+  }
+  public void gameOver() {
+    fill(255);
+    textSize(50);
+    text("Game Over", -90, 0);
     noLoop();
   }
 }
