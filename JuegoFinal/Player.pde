@@ -1,6 +1,6 @@
+
 class Player extends GameObject {
   private PVector speed;
-  private int lives;
   private float gravity = 10;
   private float jumpPower = -300;
   private boolean isJumping = false;
@@ -14,6 +14,12 @@ class Player extends GameObject {
   private boolean movingRight;
   private boolean spacePress;
 
+  //Vida del jugador
+  private int lives;
+  private boolean invulnerable;
+  private float invulnerableTime;
+  private float invulnerableDuration = 1.0; // Duración de la invulnerabilidad en segundos
+
   // Inicializar los vectores
   Vector vectorPersonaje;
   Vector vectorPersonajeEnemigo;
@@ -26,6 +32,8 @@ class Player extends GameObject {
     this.spritePlayer = new SpritePlayer();
     this.statePlayer = PlayerStateMachine.IDLE;
     this.lives = 5;
+    this.invulnerable = false;
+    this.invulnerableTime = 0;
     this.movingLeft = false;
     this.movingRight = false;
     this.spacePress=false;
@@ -71,10 +79,15 @@ class Player extends GameObject {
       resetPos();
     }
 
-    //Detiene el juego al peder las vidas
-    if (lives<=0) {
-      gameOver();
+    // Actualizar el tiempo de invulnerabilidad
+    if (invulnerable) {
+      invulnerableTime += Time.getDeltaTime(frameRate);
+      if (invulnerableTime >= invulnerableDuration) {
+        invulnerable = false;
+        invulnerableTime = 0;
+      }
     }
+
 
     // Verificar colisión con el castillo para ganar el juego
     if (position.x  >= 8850 && position.x <= 8950 &&
@@ -104,13 +117,17 @@ class Player extends GameObject {
   }
 
   public void handleEnemyCollision(ArrayList<Enemy> enemies) {
-    if (enemies == null || enemies.isEmpty()) {
+    if (enemies == null || enemies.isEmpty()|| invulnerable) {
       return;
     }
     for (Enemy enemy : enemies) {
       if (willCollideWithEnemy(this.position, enemy)) {
-        lives--;
+        invulnerable = true;
+        invulnerableTime = 0;
         resetPos();
+        if (lives <2) {
+          gameOver();
+        }
         break;
       }
     }
@@ -188,6 +205,7 @@ class Player extends GameObject {
     if (!isJumping) {
       speed.y = jumpPower* Time.getDeltaTime(frameRate);
       isJumping = true;
+      jumping.play();
       //statePlayer =
     }
   }
@@ -231,5 +249,7 @@ class Player extends GameObject {
     textSize(50);
     text("Game Over", -90, 0);
     noLoop();
+    file.stop();
+    gameOver.play();
   }
 }

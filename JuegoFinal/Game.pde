@@ -17,10 +17,10 @@ class Game {
     this.player = new Player(0, 0, groundLevel);
     this.rays = new Rays();
     this.rain = new Rain[100];
-    this.boss = new Boss(-width, -height/4, platforms,this);
+    this.boss = new Boss(-width, -height/4, platforms, this);
     this.platformImage = loadImage("Images/Ground_11.png");
     this.portalImage = loadImage("Images/portal.png");
-    
+
     for (int i = 0; i < rain.length; i++) {
       rain[i] = new Rain();
     }
@@ -57,11 +57,11 @@ class Game {
     platforms.add(new PlatformEnMovimiento(4450, groundLevel - 94, 150, 50, 0.03, false));
     platforms.add(new PlatformEnMovimiento(4950, groundLevel - 94, 150, 50, 0.03, false));
     platforms.add(new PlatformEnMovimiento(5400, groundLevel - 300, 150, 50, 0.03, true));
-  
+
     // Crear enemigos inactivos
     for (int i = 0; i < 7; i++) {
-         Enemy enemy = new Enemy(0, 0, 200, player);
-         inactiveEnemies.add(enemy);
+      Enemy enemy = new Enemy(0, 0, 200, player);
+      inactiveEnemies.add(enemy);
     }
   }
 
@@ -78,7 +78,7 @@ class Game {
     boss.move();
     player.update();
     player.handleCollision(platforms);
-    player.handleEnemyCollision( inactiveEnemies);
+    player.handleEnemyCollision( getActiveEnemies());
 
     // Actualizar la cámara
     camX = max(player.position.x, 0);
@@ -99,7 +99,7 @@ class Game {
 
     // Dibujar al jugador
     player.display();
-    
+
     //Dibuja el enemigo y los comportamientos del enemigo
     for (Enemy enemy : inactiveEnemies) {
       enemy.update(platforms);
@@ -136,13 +136,22 @@ class Game {
   public ArrayList<Platform> getPlatforms() {
     return platforms;
   }
-  
+
   public void activateEnemy(PVector newPositionEnemy) {
-        for (Enemy enemy : inactiveEnemies) {
-            if(enemy.position.x == 0){
-                enemy.activate(newPositionEnemy);
-                break;
-            }
-        }
+    for (Enemy enemy : inactiveEnemies) {
+      if (enemy.position.x == 0) {
+        enemy.activate(newPositionEnemy);
+        break;
+      }
+    }
+  }
+  private ArrayList<Enemy> getActiveEnemies() {
+    ArrayList<Enemy> activeEnemies = new ArrayList<>();
+    for (Enemy enemy : inactiveEnemies) {
+      if (enemy.isActive()) {
+        activeEnemies.add(enemy);
+      }
+    }
+    return activeEnemies;
   }
 }

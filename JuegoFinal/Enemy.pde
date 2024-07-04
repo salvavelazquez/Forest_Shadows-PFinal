@@ -94,4 +94,10 @@ class Enemy extends GameObject {
     }
     return false;
   }
+  
+  public boolean isActive() {
+    return active;
+}
+
+  
 }
