@@ -116,7 +116,7 @@ class Player extends GameObject {
   }
   
   public void addPowerUp() {
-    this.powerUpCount++;
+    this.powerUpCount+=3 ;
   }
 
   public void handleCollision(ArrayList<Platform> platforms) {
@@ -266,6 +266,8 @@ class Player extends GameObject {
     textSize(50);
     textAlign(CENTER, CENTER);
     text("Winner!", -50, 0);
+    file.stop();
+    win.play();
     noLoop();
   }
   public void gameOver() {

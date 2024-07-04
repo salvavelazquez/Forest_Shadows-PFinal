@@ -2,6 +2,7 @@ import processing.sound.*;
 SoundFile file;
 SoundFile jumping;
 SoundFile gameOver;
+SoundFile win;
 
 Menu menu;
 Game game;
@@ -20,6 +21,7 @@ void setup() {
   file = new SoundFile(this, "Sound/game-sound.wav");
   jumping = new SoundFile(this, "Sound/jump.wav");
   gameOver = new SoundFile(this, "Sound/game-over.wav");
+  win = new SoundFile(this, "Sound/win.wav");
   file.loop();
   file.amp(0.5);
 }
