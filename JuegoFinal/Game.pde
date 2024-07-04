@@ -78,6 +78,7 @@ class Game {
     boss.move();
     player.update();
     player.handleCollision(platforms);
+    player.handleEnemyCollision( inactiveEnemies);
 
     // Actualizar la cámara
     camX = max(player.position.x, 0);

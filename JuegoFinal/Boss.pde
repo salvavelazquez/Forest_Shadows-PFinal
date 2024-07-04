@@ -79,7 +79,9 @@ class Boss extends GameObject {
   }
 
   private void lanzarEggs(float camX) {
-    if ((frameCount - lastLaunchFrame) > 120) { // Lanza un huevo cada segundo si hay pelotas disponibles
+    if (pelotas.size() > 0 &&(frameCount - lastLaunchFrame) > 120) { // Lanza un huevo cada segundo si hay pelotas disponibles
+      Pelota pelota = pelotas.size() > 0 ? pelotas.remove(0) : null; // Remueve la primera pelota del ArrayList si existe
+      Pelota pelota1 = pelotas.size() > 0 ? pelotas.remove(0) : null;
       float velocidadInicial = random(-2, -4);
       float anguloLanzamiento = a * pow(0, 2) + b * 0 + c;
       PVector velocidad1 = new PVector(velocidadInicial, velocidadInicial);
@@ -88,6 +90,7 @@ class Boss extends GameObject {
       eggs.add(new Egg(new PVector(this.position.x, this.position.y + anguloLanzamiento), velocidad2));
       lastLaunchFrame = frameCount; // Reiniciar el contador de frames
     }
+
 
     for (int i = eggs.size() - 1; i >= 0; i--) {
       Egg egg = eggs.get(i);
