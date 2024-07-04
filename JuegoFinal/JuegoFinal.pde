@@ -1,4 +1,7 @@
 import processing.sound.*;
+SoundFile file;
+SoundFile jumping;
+SoundFile gameOver;
 
 Menu menu;
 Game game;
@@ -14,6 +17,11 @@ void setup() {
   game = new Game();
   estadoActual = StateMachine.MENU; // 0: Menu, 1: Game, 2: Instructions, 3: Developers
   estadoMenu = StateMachine.MENU; // 0: Menu, 1: Game, 2: Instructions, 3: Developers
+  file = new SoundFile(this, "Sound/game-sound.wav");
+  jumping = new SoundFile(this, "Sound/jump.wav");
+  gameOver = new SoundFile(this, "Sound/game-over.wav");
+  file.loop();
+  file.amp(0.5);
 }
 
 void draw() {
