@@ -60,7 +60,7 @@ class Game {
   
     // Crear enemigos inactivos
     for (int i = 0; i < 7; i++) {
-         Enemy enemy = new Enemy(0, 0, 100, player);
+         Enemy enemy = new Enemy(0, 0, 200, player);
          inactiveEnemies.add(enemy);
     }
   }
@@ -99,6 +99,8 @@ class Game {
 
     // Dibujar al jugador
     player.display();
+    
+    //Dibuja el enemigo y los comportamientos del enemigo
     for (Enemy enemy : inactiveEnemies) {
       enemy.update(platforms);
       enemy.display(camX);
@@ -135,10 +137,10 @@ class Game {
     return platforms;
   }
   
-  public void activateEnemy(float x, float y) {
+  public void activateEnemy(PVector newPositionEnemy) {
         for (Enemy enemy : inactiveEnemies) {
             if(enemy.position.x == 0){
-                enemy.activate(x, y);
+                enemy.activate(newPositionEnemy);
                 break;
             }
         }

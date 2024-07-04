@@ -119,9 +119,11 @@ class Boss extends GameObject {
   private void verificarColisiones(float camX) {
     for (int i = eggs.size() - 1; i >= 0; i--) {
       Egg egg = eggs.get(i);
-
+      
       if (!egg.isFalling && egg.isOnPlatform()) {
-            game.activateEnemy(egg.posicion.x+camX, egg.getPosicion().y-50);
+            PVector newPositionEnemy = new PVector(egg.getPosicion().x+camX, egg.getPosicion().y-60);
+            
+            game.activateEnemy(newPositionEnemy);
             eggs.remove(i);
       }
     }
