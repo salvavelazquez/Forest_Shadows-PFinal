@@ -22,14 +22,14 @@ class Enemy extends GameObject {
     spriteEnemyGround.renderEnemyGround(this.stateEnemyGround, this.position, camX);
   }
   
-  public void activate(float x, float y) {
-    this.position.set(x, y); // Establecer la posición inicial
+  public void activate(PVector position) {
+    setPosition(position); // Establecer la posición inicial
     this.active = true; // Activar el enemigo
   }
   
   public void deactivate() {
     this.active = false; // Desactivar el enemigo
-    this.position.set(0, 0); // Reiniciar la posición a (0, 0)
+    setPosition(new PVector(0,0)); // Reiniciar la posición a (0, 0)
   }  
   
   

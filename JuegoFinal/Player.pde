@@ -4,6 +4,8 @@ class Player extends GameObject {
   private float gravity = 10;
   private float jumpPower = -300;
   private boolean isJumping = false;
+  private float angleVision = radians(40);
+  private float fovRadius = 125;
   private float groundLevel;
   private SpritePlayer spritePlayer;
   private int statePlayer;
@@ -11,6 +13,7 @@ class Player extends GameObject {
   private boolean movingLeft;
   private boolean movingRight;
   private boolean spacePress;
+  
   // Inicializar los vectores
   Vector vectorPersonaje;
   Vector vectorPersonajeEnemigo;
@@ -35,10 +38,10 @@ class Player extends GameObject {
     position.add(speed);
     if (movingLeft) {
       statePlayer = PlayerStateMachine.MOVE_LEFT;
-      speed.x = -5;
+      speed.x = -7;
     } else if (movingRight) {
       statePlayer = PlayerStateMachine.MOVE_RIGHT;
-      speed.x = 5;
+      speed.x = 7;
     } else {
       speed.x = 0;
       statePlayer = PlayerStateMachine.IDLE;
@@ -140,12 +143,10 @@ class Player extends GameObject {
   }
 
   void campoVision() {
-    float anguloVision = radians(15);
     noStroke();
     fill(0, 255, 0, 127); // Color verde translúcido
-    float fovRadius = 300;
-    float startAngle = atan2(vectorPersonaje.getDestino().y, vectorPersonaje.getDestino().x) - anguloVision;
-    float endAngle = atan2(vectorPersonaje.getDestino().y, vectorPersonaje.getDestino().x) + anguloVision;
+    float startAngle = atan2(vectorPersonaje.getDestino().y, vectorPersonaje.getDestino().x) - angleVision;
+    float endAngle = atan2(vectorPersonaje.getDestino().y, vectorPersonaje.getDestino().x) + angleVision;
 
     if (speed.x > 0) {
       arc(position.x-this.camX, position.y+20, fovRadius * 2, fovRadius * 2, startAngle, endAngle);
@@ -159,8 +160,6 @@ class Player extends GameObject {
     }
   }
   public void killEnemiesInView(ArrayList<Enemy> enemies) {
-    float anguloVision = radians(15);
-    float fovRadius = 300;
     PVector direction = new PVector(0, 0);
 
     if (movingRight) {
@@ -179,7 +178,7 @@ class Player extends GameObject {
 
         if ((distance < fovRadius && spacePress) ) {
           float angleToEnemy = PVector.angleBetween(direction, toEnemy);
-          if (abs(angleToEnemy) < anguloVision) {
+          if (abs(angleToEnemy) < angleVision) {
             enemy.deactivate();
             //enemies.remove(i); // Elimina el enemigo del ArrayList
           }
