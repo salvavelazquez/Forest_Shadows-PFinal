@@ -1,4 +1,3 @@
-
 class Player extends GameObject {
   private PVector speed;
   private float gravity = 10;
@@ -13,6 +12,8 @@ class Player extends GameObject {
   private boolean movingLeft;
   private boolean movingRight;
   private boolean spacePress;
+  private Vector vectorCharacter;
+
 
   //Vida del jugador
   private int lives;
@@ -20,10 +21,6 @@ class Player extends GameObject {
   private float invulnerableTime;
   private float invulnerableDuration = 1.0; // Duración de la invulnerabilidad en segundos
 
-  // Inicializar los vectores
-  Vector vectorPersonaje;
-  Vector vectorPersonajeEnemigo;
-  
   //Variables del Powerup
   private int powerUpCount = 0;
   private boolean powerUpActive = false;
@@ -44,8 +41,7 @@ class Player extends GameObject {
     this.movingRight = false;
     this.spacePress=false;
     // Inicializar los vectores
-    vectorPersonaje = new Vector(new PVector(x, y), new PVector(1, 0));
-    vectorPersonajeEnemigo = new Vector(new PVector(x, y), new PVector(1, 0));
+    vectorCharacter = new Vector(new PVector(x, y), new PVector(1, 0));
   }
   public void update() {
     speed.y += gravity * Time.getDeltaTime(frameRate);
@@ -63,16 +59,16 @@ class Player extends GameObject {
 
     // Actualizar el temporizador del power-up
     if (powerUpActive) {
-       powerUpTimer += Time.getDeltaTime(frameRate);
-       if (powerUpTimer >= POWER_UP_DURATION) {
-            powerUpActive = false;
-            powerUpTimer = 0;
-            spacePress = false; // Apaga el efecto del power-up
-        }
-     }
-     if (spacePress) {
-         campoVision();
-     }
+      powerUpTimer += Time.getDeltaTime(frameRate);
+      if (powerUpTimer >= POWER_UP_DURATION) {
+        powerUpActive = false;
+        powerUpTimer = 0;
+        spacePress = false; // Apaga el efecto del power-up
+      }
+    }
+    if (spacePress) {
+      fieldVision();
+    }
 
     // Limitar el movimiento del jugador a la izquierda
     this.camX = max(this.position.x, 0);
@@ -114,7 +110,7 @@ class Player extends GameObject {
     this.camX = max(this.position.x, 0);
     spritePlayer.renderPlayer(this.statePlayer, this.position, this.camX);
   }
-  
+
   public void addPowerUp() {
     this.powerUpCount+=3 ;
   }
@@ -174,11 +170,11 @@ class Player extends GameObject {
     return false;
   }
 
-  void campoVision() {
+  public void fieldVision() {
     noStroke();
     fill(0, 255, 0, 127); // Color verde translúcido
-    float startAngle = atan2(vectorPersonaje.getDestino().y, vectorPersonaje.getDestino().x) - angleVision;
-    float endAngle = atan2(vectorPersonaje.getDestino().y, vectorPersonaje.getDestino().x) + angleVision;
+    float startAngle = atan2(vectorCharacter.getDestiny().y, vectorCharacter.getDestiny().x) - angleVision;
+    float endAngle = atan2(vectorCharacter.getDestiny().y, vectorCharacter.getDestiny().x) + angleVision;
 
     if (speed.x > 0) {
       arc(position.x-this.camX, position.y+20, fovRadius * 2, fovRadius * 2, startAngle, endAngle);
@@ -233,7 +229,7 @@ class Player extends GameObject {
     position.y=300;
   }
 
-  public void manejarTeclaPresionada() {
+  public void handleKeyPressed() {
     if (key == 'a' ||key == 'A' || keyCode==LEFT) {
 
       movingLeft = true;
@@ -243,16 +239,16 @@ class Player extends GameObject {
       jump();
     } else if (keyCode==32) {
       if (powerUpCount > 0 && !powerUpActive) {
-            spacePress = true;
-            powerUpActive = true;
-            powerUpTimer = 0;
-            this.powerUpCount--;
-            println(this.powerUpCount);
+        spacePress = true;
+        powerUpActive = true;
+        powerUpTimer = 0;
+        this.powerUpCount--;
+        println(this.powerUpCount);
       }
     }
   }
 
-  public void manejarTeclaLiberada() {
+  public void handleKeyReleased() {
     if ( key == 'd' || key == 'D' ||keyCode == RIGHT) {
       movingRight = false;
     } else if (key == 'a' || key == 'A' || keyCode == LEFT) {

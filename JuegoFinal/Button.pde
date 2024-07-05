@@ -1,31 +1,31 @@
 class Button {
   private float x, y;
-  private float ancho, alto;
-  private String texto;
+  private float widthButton, heightButton;
+  private String text;
 
-  public Button(float x, float y, float ancho, float alto, String texto) {
+  public Button(float x, float y, float widthButton, float heightButton, String text) {
     this.x = x;
     this.y = y;
-    this.ancho = ancho;
-    this.alto = alto;
-    this.texto = texto;
+    this.widthButton = widthButton;
+    this.heightButton = heightButton;
+    this.text = text;
   }
 
   public void display() {
     noStroke();
-    fill(227,96,14,200);
-    if (mouseEstaEncima()) {
+    fill(227, 96, 14, 200);
+    if (mouseOnTop()) {
       fill(119, 50, 250, 200);
       //fill(50, 100, 250, 200);
     }
-    rect(x, y, ancho, alto, 10);
+    rect(x, y, widthButton, heightButton, 10);
     fill(255);
     textSize(45);
     textAlign(CENTER, CENTER);
-    text(texto, x + ancho / 2, y + alto / 2);
+    text(text, x + widthButton / 2, y + heightButton / 2);
   }
 
-  boolean mouseEstaEncima() {
-    return mouseX > x && mouseX < x + ancho && mouseY > y && mouseY < y + alto;
+  public boolean mouseOnTop() {
+    return mouseX > x && mouseX < x + widthButton && mouseY > y && mouseY < y + heightButton;
   }
 }

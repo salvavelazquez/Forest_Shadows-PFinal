@@ -9,7 +9,7 @@ class SpritePlayer {
   protected int heightFrame;
   private float xFrameFloat;
   private float nextxFrameFloat;
-  private float velTransicion;
+  private float velTransition;
 
   // Añadir variables para el factor de escala
   private float scaleFactorX;
@@ -25,7 +25,7 @@ class SpritePlayer {
     this.yFrame = 0;
     this.xFrameFloat = 0;
     this.nextxFrameFloat = widthFrame;
-    this.velTransicion = 8;
+    this.velTransition = 8;
 
     // Inicializar los factores de escala
     this.scaleFactorX = 1.5; // Cambia este valor según sea necesario
@@ -56,7 +56,7 @@ class SpritePlayer {
     this.widthFrame * this.scaleFactorX, 
     this.heightFrame * this.scaleFactorY);
     
-    xFrameFloat += (widthFrame * velTransicion * Time.getDeltaTime(frameRate));
+    xFrameFloat += (widthFrame * velTransition * Time.getDeltaTime(frameRate));
 
     if (xFrameFloat >= nextxFrameFloat) {
       this.xFrame += this.widthFrame;

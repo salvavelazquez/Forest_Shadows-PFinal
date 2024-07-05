@@ -66,28 +66,28 @@ class Menu {
     popMatrix();    
   }
   
-  public void mouseControladorMenu() {
-    if (playButton.mouseEstaEncima()) {
-      estadoActual = StateMachine.PLAYING;
-    } else if (instructionsButton.mouseEstaEncima()) {
-      estadoMenu = StateMachine.INSTRUCTING;
-    }else if (developersButton.mouseEstaEncima()) {
-      estadoMenu = StateMachine.DEVS;;
+  public void mouseControllerMenu() {
+    if (playButton.mouseOnTop()) {
+      currentState = StateMachine.PLAYING;
+    } else if (instructionsButton.mouseOnTop()) {
+      menuState = StateMachine.INSTRUCTING;
+    }else if (developersButton.mouseOnTop()) {
+      menuState = StateMachine.DEVS;;
       this.up = height; // Resetear
-    } else if (backButton.mouseEstaEncima()) {
-      estadoMenu = StateMachine.MENU;
+    } else if (backButton.mouseOnTop()) {
+      menuState = StateMachine.MENU;
     }
   }
   
-  public void mouseControladorInstrucciones() {
-    if (backButton.mouseEstaEncima()) {
-      estadoMenu = StateMachine.MENU;
+  public void mouseControllerInstructions() {
+    if (backButton.mouseOnTop()) {
+      menuState = StateMachine.MENU;
     }
   }
   
-  public void mouseControladorDesarrolladores() {
-    if (backButton.mouseEstaEncima()) {
-      estadoMenu = StateMachine.MENU;
+  public void mouseControllerDevs() {
+    if (backButton.mouseOnTop()) {
+      menuState = StateMachine.MENU;
     }
   }
 

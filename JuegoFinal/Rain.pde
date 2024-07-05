@@ -1,18 +1,18 @@
 class Rain{
-  float x = random(-width/2,width/2);
-  float y = random(-height/2,-600);
-  float z = random(0,20);
-  float len = map(z, 0, 20, 10, 20);
-  float yspeed = map(z, 0, 20, 1, 20);
+  private float x = random(-width/2,width/2);
+  private float y = random(-height/2,-600);
+  private float z = random(0,20);
+  private float len = map(z, 0, 20, 10, 20);
+  private float ySpeed = map(z, 0, 20, 1, 20);
 
   public void fall() {
-    y = y + yspeed;
+    y = y + ySpeed;
     float grav = map(z, 0, 20, 0, 0.2);
-    yspeed = yspeed + grav;
+    ySpeed = ySpeed + grav;
     
     if (y > height/2) {
       y = random(-height,-height/3);
-      yspeed = map(z, 0, 20, 4, 10);
+      ySpeed = map(z, 0, 20, 4, 10);
     }
   }
   

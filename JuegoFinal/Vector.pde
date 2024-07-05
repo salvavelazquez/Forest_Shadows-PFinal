@@ -1,37 +1,37 @@
 class Vector {
-  private PVector origen;
-  private PVector destino;
+  private PVector origin;
+  private PVector destiny;
 
   public Vector() {
   }
 
-  public Vector(PVector origen, PVector destino) {
-    this.origen = origen;
-    this.destino = destino;
+  public Vector(PVector origin, PVector destiny) {
+    this.origin = origin;
+    this.destiny = destiny;
   }
 
   public void display() {
     strokeWeight(3);
-    line(origen.x, origen.y, origen.x + destino.x, origen.y + destino.y);
+    line(origin.x, origin.y, origin.x + destiny.x, origin.y + destiny.y);
   }
 
-  public float obtenerProductoPunto(Vector vector) {
-    return PVector.dot(this.getDestino(), vector.getDestino());
+  public float getDotProduct(Vector vector) {
+    return PVector.dot(this.getDestiny(), vector.getDestiny());
   }
 
-  public void setOrigen(PVector origen) {
-    this.origen = origen;
+  public void setOrigin(PVector origin) {
+    this.origin = origin;
   }
 
-  public PVector getOrigen() {
-    return this.origen;
+  public PVector getOrigin() {
+    return this.origin;
   }
 
-  public void setDestino(PVector destino) {
-    this.destino = destino;
+  public void setDestiny(PVector destiny) {
+    this.destiny = destiny;
   }
 
-  public PVector getDestino() {
-    return this.destino;
+  public PVector getDestiny() {
+    return this.destiny;
   }
 }

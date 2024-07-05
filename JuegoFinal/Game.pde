@@ -5,13 +5,12 @@ class Game {
   private Boss boss;
   private ArrayList<Platform> platforms = new ArrayList<>();
   private ArrayList<Enemy> inactiveEnemies = new ArrayList<>();
-  private ArrayList<PowerUp> powerUps = new ArrayList<>();
+  private ArrayList<PowerUpPlayer> energy = new ArrayList<>();
   private PImage platformImage, portalImage, powerUpImage;
   private float camX = -width/2;
   private float groundLevel;
 
   //private PImage bgImage;
-  //private SoundFile ambientSound, lightningSound;
 
   public Game() {
     this.groundLevel = height/2.23;
@@ -28,11 +27,6 @@ class Game {
     }
     //bgImage = loadImage("Images/levels/background.png"); // Carga tu imagen de fondo aquí
     //bgImage.resize(width, height);
-    //Sound
-    /**this.ambientSound = new SoundFile(p, "Sound/ambientSound.mp3");
-     this.lightningSound = new SoundFile(p, "Sound/lightningSound.mp3");
-     ambientSound.loop();
-     lightningSound.loop();*/
 
     // Creación de plataformas
     platforms.add(new Platform(-450, groundLevel + 13, 700, 55));
@@ -55,15 +49,15 @@ class Game {
     platforms.add(new Platform(6300, groundLevel - 350, 90, 60));
     platforms.add(new Platform(6400, groundLevel - 200, 800, 60));
 
-    platforms.add(new PlatformEnMovimiento(4000, groundLevel - 94, 150, 50, 0.03, false));
-    platforms.add(new PlatformEnMovimiento(4450, groundLevel - 94, 150, 50, 0.03, false));
-    platforms.add(new PlatformEnMovimiento(4950, groundLevel - 94, 150, 50, 0.03, false));
-    platforms.add(new PlatformEnMovimiento(5400, groundLevel - 300, 150, 50, 0.03, true));
-    
+    platforms.add(new MobilePlatform(4000, groundLevel - 94, 150, 50, 0.03, false));
+    platforms.add(new MobilePlatform(4450, groundLevel - 94, 150, 50, 0.03, false));
+    platforms.add(new MobilePlatform(4950, groundLevel - 94, 150, 50, 0.03, false));
+    platforms.add(new MobilePlatform(5400, groundLevel - 300, 150, 50, 0.03, true));
+
     //power-ups
-    powerUps.add(new PowerUp(450, groundLevel - 50, powerUpImage));
-    powerUps.add(new PowerUp(1600, groundLevel - 50, powerUpImage));
-    powerUps.add(new PowerUp(2450, groundLevel - 134, powerUpImage));
+    energy.add(new PowerUpPlayer(450, groundLevel - 50, powerUpImage));
+    energy.add(new PowerUpPlayer(1600, groundLevel - 50, powerUpImage));
+    energy.add(new PowerUpPlayer(2450, groundLevel - 134, powerUpImage));
 
     // Crear enemigos inactivos
     for (int i = 0; i < 7; i++) {
@@ -92,14 +86,14 @@ class Game {
 
     // Dibujar plataformas
     for (Platform p : platforms) {
-      if (p instanceof PlatformEnMovimiento) {
-        ((PlatformEnMovimiento)p).update();
+      if (p instanceof MobilePlatform) {
+        ((MobilePlatform)p).update();
       }
       p.display(camX, platformImage);
     }
-    
+
     // Dibujar power-ups
-    for (PowerUp powerUp : powerUps) {
+    for (PowerUpPlayer powerUp : energy) {
       powerUp.display(camX);
     }
 
@@ -121,9 +115,9 @@ class Game {
     fill(255);
     textSize(30);
     text("Vidas: " + player.lives, -width * 0.4, -height * 0.4);
-    
+
     // Detectar colisiones con power-ups
-    colisionPowerUps();
+    collisionPowerUpPlayer();
     text("PowerUp: " + player.powerUpCount, -width * 0.39, -height * 0.45);
   }
 
@@ -137,16 +131,16 @@ class Game {
 
 
 
-  void mouseControladorGame() {
+  public void mouseControllerGame() {
     // Controlador de mouse
   }
 
-  void tecladoControladorGame() {
-    player.manejarTeclaPresionada();
+  public void keyControllerGame() {
+    player.handleKeyPressed();
   }
 
-  void tecladoLiberadoGame() {
-    player.manejarTeclaLiberada();
+  public void releasedKeyGame() {
+    player.handleKeyReleased();
   }
 
   public ArrayList<Platform> getPlatforms() {
@@ -170,14 +164,13 @@ class Game {
     }
     return activeEnemies;
   }
-  
-  private void colisionPowerUps() {
-    for (int i = powerUps.size() - 1; i >= 0; i--) {
-      PowerUp powerUp = powerUps.get(i);
+
+  private void collisionPowerUpPlayer() {
+    for (int i = energy.size() - 1; i >= 0; i--) {
+      PowerUpPlayer powerUp = energy.get(i);
       if (player.position.dist(powerUp.position) < 50) {
-        powerUps.remove(i);
+        energy.remove(i);
         player.addPowerUp();
-        
       }
     }
   }

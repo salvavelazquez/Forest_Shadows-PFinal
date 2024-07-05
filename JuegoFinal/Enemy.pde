@@ -14,25 +14,25 @@ class Enemy extends GameObject {
     this.stateEnemyGround = EnemyGroundStateMachine.MOVE_RIGHT;  //Inicia con el enemigo yendo hacia la derecha
     this.speed = speed;
     this.player = player; // Inicializar la referencia al jugador
-    this.active = false; // Inicialmente inactivo  
-}
+    this.active = false; // Inicialmente inactivo
+  }
 
   public void display(float camX) {
-    if (!active) return; 
+    if (!active) return;
     spriteEnemyGround.renderEnemyGround(this.stateEnemyGround, this.position, camX);
   }
-  
+
   public void activate(PVector position) {
     setPosition(position); // Establecer la posición inicial
     this.active = true; // Activar el enemigo
   }
-  
+
   public void deactivate() {
     this.active = false; // Desactivar el enemigo
-    setPosition(new PVector(0,0)); // Reiniciar la posición a (0, 0)
-  }  
-  
-  
+    setPosition(new PVector(0, 0)); // Reiniciar la posición a (0, 0)
+  }
+
+
 
   public void update( ArrayList<Platform> platforms) {
     if (!active) return; // No hacer nada si no está activo
@@ -44,7 +44,7 @@ class Enemy extends GameObject {
     direction.mult(speed * Time.getDeltaTime(frameRate));
     // Añadir la dirección a la velocidad
     velocity.x = direction.x;
-    this.position.add(this.velocity); 
+    this.position.add(this.velocity);
     // Ordena las plataformas según su posición en el eje X
     platforms.sort((p1, p2) -> Float.compare(p1.x, p2.x));
     //Verificar colisión con plataformas
@@ -65,8 +65,8 @@ class Enemy extends GameObject {
     if (!onPlatform) {
       velocity.y += gravity * Time.getDeltaTime(frameRate);
     }
-    
-    
+
+
     // Desactivar el enemigo si está fuera de los límites
     if (position.y > 600) {
       deactivate();
@@ -84,7 +84,7 @@ class Enemy extends GameObject {
     float sweepRange = 900; // Definir un rango de barrido adecuado
     return Math.abs(position.x - platform.x) <= sweepRange;
   }
-  
+
   private boolean willCollide(PVector currentPos, PVector nextPos, Platform platform) {
     // Barrido en el eje Y
     if (currentPos.y + 60 > platform.y && nextPos.y + 60 < platform.y + platform.h) {
@@ -94,10 +94,8 @@ class Enemy extends GameObject {
     }
     return false;
   }
-  
+
   public boolean isActive() {
     return active;
-}
-
-  
+  }
 }

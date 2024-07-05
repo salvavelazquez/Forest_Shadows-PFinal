@@ -7,7 +7,7 @@ class SpriteEnemyGround {
   protected int heightFrame;
   private float xFrameFloat;
   private float nextxFrameFloat;
-  private float velTransicion;
+  private float velTransition;
  
   // Añadir variables para el factor de escala
   private float scaleFactorX;
@@ -22,7 +22,7 @@ class SpriteEnemyGround {
     this.yFrame = 0;
     this.xFrameFloat = 0;
     this.nextxFrameFloat = widthFrame;
-    this.velTransicion = 10;
+    this.velTransition = 10;
 
     // Inicializar los factores de escala
     this.scaleFactorX = 0.3; // Cambia este valor según sea necesario
@@ -38,7 +38,7 @@ class SpriteEnemyGround {
               position.x - camX, position.y,
               this.widthFrame * this.scaleFactorX, 
               this.heightFrame * this.scaleFactorY);
-        xFrameFloat += (widthFrame * velTransicion * Time.getDeltaTime(frameRate));
+        xFrameFloat += (widthFrame * velTransition * Time.getDeltaTime(frameRate));
 
         if (xFrameFloat >= nextxFrameFloat) {
           this.xFrame += this.widthFrame;
@@ -56,7 +56,7 @@ class SpriteEnemyGround {
               position.x - camX, position.y,
               this.widthFrame * this.scaleFactorX, 
               this.heightFrame * this.scaleFactorY);
-        xFrameFloat += (widthFrame * velTransicion * Time.getDeltaTime(frameRate));
+        xFrameFloat += (widthFrame * velTransition * Time.getDeltaTime(frameRate));
 
         if (xFrameFloat >= nextxFrameFloat) {
           this.xFrame += this.widthFrame;

@@ -8,16 +8,16 @@ Menu menu;
 Game game;
 /**Variable que usaremos para el estado a evaluar entre las pantallas*/
 // ------ VARIABLE GLOBAL ------
-int estadoActual;
-int estadoMenu;
+int currentState;
+int menuState;
 
 void setup() {
   fullScreen();
   frameRate(60); // Asegurar que el juego se ejecute a 60 fps
   menu = new Menu();
   game = new Game();
-  estadoActual = StateMachine.MENU; // 0: Menu, 1: Game, 2: Instructions, 3: Developers
-  estadoMenu = StateMachine.MENU; // 0: Menu, 1: Game, 2: Instructions, 3: Developers
+  currentState = StateMachine.MENU; // 0: Menu, 1: Game, 2: Instructions, 3: Developers
+  menuState = StateMachine.MENU; // 0: Menu, 1: Game, 2: Instructions, 3: Developers
   file = new SoundFile(this, "Sound/game-sound.wav");
   jumping = new SoundFile(this, "Sound/jump.wav");
   gameOver = new SoundFile(this, "Sound/game-over.wav");
@@ -29,13 +29,13 @@ void setup() {
 void draw() {
   translate(width/2, height/2); // Establece el origen de coordenadas en el centro - PLANO CARTESIANO
   scale(1, 1); // Establece los cuadrantes
-  switch(estadoActual) {
+  switch(currentState) {
   case StateMachine.MENU:
     {
       menu.display();
-      if (estadoMenu == StateMachine.INSTRUCTING) {
+      if (menuState == StateMachine.INSTRUCTING) {
         menu.displayInstructions();
-      } else if (estadoMenu == StateMachine.DEVS) {
+      } else if (menuState == StateMachine.DEVS) {
         menu.displayDevelopers();
       }
       break;
@@ -49,32 +49,32 @@ void draw() {
 }
 
 void mousePressed() {
-  switch(estadoActual) {
+  switch(currentState) {
   case StateMachine.MENU:
     {
-      menu.mouseControladorMenu();
-      menu.mouseControladorInstrucciones();
-      menu.mouseControladorDesarrolladores();
+      menu.mouseControllerMenu();
+      menu.mouseControllerInstructions();
+      menu.mouseControllerDevs();
       break;
     }
   }
 }
 
 void keyPressed() {
-  switch(estadoActual) {
+  switch(currentState) {
   case StateMachine.PLAYING:
     {
-      game.tecladoControladorGame();
+      game.keyControllerGame();
       break;
     }
   }
 }
 
 void keyReleased() {
-  switch(estadoActual) {
+  switch(currentState) {
   case StateMachine.PLAYING:
     {
-      game.tecladoLiberadoGame();
+      game.releasedKeyGame();
       break;
     }
   }

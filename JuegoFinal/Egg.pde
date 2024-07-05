@@ -1,21 +1,21 @@
 class Egg {
   private PVector posicion;
-  private PVector velocidad;
-  private PVector gravedad = new PVector(0, 0.1);
+  private PVector speed;
+  private PVector gravity = new PVector(0, 0.1);
   private boolean isFalling;  //Está cayendo
   private boolean onPlatform; //Está sobre la plataforma
 
-  public Egg(PVector posicion, PVector velocidad) {
+  public Egg(PVector posicion, PVector speed) {
     this.posicion = posicion;
-    this.velocidad = velocidad;
+    this.speed = speed;
     this.isFalling = true;
     this.onPlatform = false;
   }
 
-  public void mover() {
+  public void move() {
     if (isFalling) {
-      velocidad.add(gravedad);
-      posicion.add(velocidad);
+      speed.add(gravity);
+      posicion.add(speed);
     }
   }
 
@@ -37,10 +37,10 @@ class Egg {
     platforms.sort((p1, p2) -> Float.compare(p1.x, p2.x));
     for (Platform p : platforms) {
       if (isInSweepRange(this.posicion, p, camX)) {
-        PVector nextPosition = PVector.add(this.posicion, this.velocidad);
+        PVector nextPosition = PVector.add(this.posicion, this.speed);
         if (willCollide(this.posicion, nextPosition, p, camX)) {
           this.posicion.y = p.y - 10; // Ajusta la posición del huevo encima de la plataforma
-          this.velocidad.y = 0;
+          this.speed.y = 0;
           this.isFalling = false; // Detiene la caída del huevo
           this.onPlatform = true; // Marca que está sobre una plataforma
           break;
